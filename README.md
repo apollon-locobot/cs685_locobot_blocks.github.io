@@ -1,1 +1,1 @@
-# cs685_locobot_blocks.github.io
+# Real Robotics Planning and Control with LoCoBot
