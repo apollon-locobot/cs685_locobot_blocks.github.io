@@ -57,9 +57,31 @@ html {
   margin: 16px;
 }
 
+a {
+  white-space: nowrap;
+}
+
+a:hover {
+  color: #4CAF50 !important;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+}
+
 /* Sidenav CSS */
 .sidenav {
-  height: 100%;
+  height: 100vh;
   width: 0;
   position: fixed;
   z-index: 1;
@@ -81,7 +103,7 @@ html {
 }
 
 .sidenav a:hover {
-  color: #f1f1f1;
+  color: #f1f1f1 !important;
 }
 
 .sidenav .closebtn {

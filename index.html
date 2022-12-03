@@ -20,6 +20,9 @@
   <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a href="#introduction">INTRODUCTION</a>
+    <a href="#locobot">LOCOBOT PX100</a>
+    <a href="#objective">OBJECTIVE</a>
+    <a href="#kinematics">INVERSE KINEMATICS</a>
     <a href="#credits">CREDITS</a>
     <a href="#references">REFERENCES</a>
   </div>
@@ -35,11 +38,54 @@
   <div id="main">
     <div class="w3-sand w3-grayscale w3-large">
       <div id="introduction">
-        <h5 class="w3-center w3-padding-64"><span class="w3-tag w3-wide">INTRODUCTION</span></h5>
+        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">INTRODUCTION</span></h5>
+        <p class="content">This is a project done as a part of the CS685 Autonomous Robotics course at George Mason University. We've wanted to work on a real robot and chose to work on the <a href="https://www.trossenrobotics.com/locobot-px100.aspx" target="_blank">LoCoBot PX100</a>, as the Interbotix APIs make it easier to work with. We've chosen a problem that incorporates the concepts of Inverse Kinematics, Control, Probabilistic Robotics, Tracking and Localization, SLAM taught in the <a href="https://cs.gmu.edu/media/syllabi/Fall2022/CS_685SteinG001.pdf" target="_blank">course</a>. The project was developed using <a href="http://wiki.ros.org/noetic" target="_blank">ROS Noetic</a></p>
       </div>
 
+      <div id="locobot">
+        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">LOCOBOT PX100</span></h5>
+        <div class="row">
+          <div class="column">
+            <p class="content">
+              LoCoBot PX100, a.k.a "Low-Cost Robot", from Trossen Robotics starts from about $3000 and has the following features:
+            <ul>
+              <li>Create 3 from iRobot (base)</li>
+              <li>Intel NUC NUC8i3BEH Mini PC</li>
+              <li>Intel® RealSense™ Depth Camera D435</li>
+              <li>PincherX 100 Robot Arm (4 degrees of freedom)</li>
+              <li>RPLIDAR A2M8 360° Laser Range Scanner</li>
+              <li>MoveIt Support</li>
+            </ul>
+            </p>
+          </div>
+          <div class="column">
+            <center><img src="/assets/images/px100_other_side.jpg" style="width:40%;" class="w3-margin-top"></center>
+          </div>
+        </div>
+      </div>
+
+      <div id="IK">
+        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">GRASPING AND INVERSE KINEMATICS</span></h5>
+        <p class="content">
+          The LoCoBot PX100 is
+        </p>
+      </div>
+
+      <div id="objective">
+        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">PROJECT OBJECTIVE - TOY COLLECTION</span></h5>
+        <p class="content">
+          The Robot searches for a block in its view, travels to it, aligns itself, picks the block, travels back to the origin, and drops it in the bin.
+        </p>
+        <center><img src="/assets/images/Project_Flow_Chart.png" style="width:90%;" class="w3-margin-top"></center>
+      </div>
+
+      <!-- <div id="code">
+        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">BLOCKBOT.PY</span></h5>
+        <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2F8f35c934f755259fcaecc0463301a5b61adc14c7%2Fblockbot.py%23L159-L182&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
+      </div> -->
+
       <div id="credits">
-        <h5 class="w3-center w3-padding-64"><span class="w3-tag w3-wide">CREDITS</span></h5>
+        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">CREDITS</span></h5>
         <p class="content">
           We're grateful to the following people in helping us complete this project:
         <ul>
@@ -51,35 +97,23 @@
       </div>
 
       <div id="references">
-        <h5 class="w3-center w3-padding-64"><span class="w3-tag w3-wide">REFERENCES</span></h5>
+        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">REFERENCES</span></h5>
         <p class="content">
         <ul>
-          <li><a href="https://april.eecs.umich.edu/software/apriltag#:~:text=AprilTags%20are%20conceptually%20similar%20to,robustly%20and%20from%20longer%20ranges.">AprilTags</a></li>
+          <li><a href="https://april.eecs.umich.edu/software/apriltag#:~:text=AprilTags%20are%20conceptually%20similar%20to,robustly%20and%20from%20longer%20ranges." target="_blank">AprilTags</a></li>
+          <li><a href="https://www.trossenrobotics.com/docs/interbotix_xsarms/index.html" target="_blank">Interbotix Arms</a></li>
+          <li><a href="https://github.com/Interbotix/interbotix_ros_toolboxes/blob/cdb8e7b77eb6be31d20bc77c947f5ba34525f4ec/interbotix_xs_toolbox/interbotix_xs_modules/src/interbotix_xs_modules/locobot.py" target="_blank">Interbotix LoCoBot API</a></li>
+          <li><a href="https://pidexplained.com/how-to-tune-a-pid-controller/" target="_blank">How to tune PID Controller</a></li>
+          <li><a href="https://gtsam.org/" target="_blank">GTSAM</a></li>
         </ul>
         </p>
       </div>
 
-
-      <!-- <div class="w3-container" id="about">
-        <div class="w3-content" style="max-width:700px">
-          <h5 class="w3-center w3-padding-64"><span class="w3-tag w3-wide">ABOUT THE CAFE</span></h5>
-          <p>The Cafe was founded in blabla by Mr. Smith in lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-          <p>In addition to our full espresso and brew bar menu, we serve fresh made-to-order breakfast and lunch sandwiches, as well as a selection of sides and salads and other good stuff.</p>
-          <div class="w3-panel w3-leftbar w3-light-grey">
-            <p><i>"Use products from nature for what it's worth - but never too early, nor too late." Fresh is the new sweet.</i></p>
-            <p>Chef, Coffeeist and Owner: Liam Brown</p>
-          </div>
-          <img src="/w3images/coffeeshop.jpg" style="width:100%;max-width:1000px" class="w3-margin-top">
-          <p><strong>Opening hours:</strong> everyday from 6am to 5pm.</p>
-          <p><strong>Address:</strong> 15 Adr street, 5015, NY</p>
-        </div>
-      </div> -->
-
     </div>
 
     <footer class="w3-center w3-light-grey w3-padding-48 w3-large">
-      <p>A project by <a href="https://www.linkedin.com/in/aaron-pollon-8a8b2246/" target="_blank" class="w3-hover-text-green">Aaron Pollon</a>, <a href="https://www.linkedin.com/in/sai-kishore-salaka-0112358/" target="_blank" class="w3-hover-text-green">Sai Kishore Salaka</a>, and <a href="https://www.linkedin.com/in/sashankkakaraparty/" target="_blank" class="w3-hover-text-green">Sai Sashank</a></p>
-      <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a></p>
+      <p>A project by <a href="https://www.linkedin.com/in/aaron-pollon-8a8b2246/" target="_blank">Aaron Pollon</a>, <a href="https://www.linkedin.com/in/sai-kishore-salaka-0112358/" target="_blank">Sai Kishore Salaka</a>, and <a href="https://www.linkedin.com/in/sashankkakaraparty/" target="_blank">Sai Sashank</a></p>
+      <p>Website powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
     </footer>
   </div>
 </body>
