@@ -90,7 +90,7 @@
 
           <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2F8f35c934f755259fcaecc0463301a5b61adc14c7%2Fblockbot.py%23L205-L243&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
 
-          To obtain these fixed distance and angle of alignment, we've experimented with multiple positions of the block and found the one that makes it easy to grab. Once aligned, the robot's arm is set to the home pose, and in the <code>set_ee_cartesian_trajectory()</code> <code>z</code> is set to <code>-0.25</code> which makes the arm reach the ground from the home position, where the block would be.
+          To obtain these fixed distance and angle of alignment, we've experimented with multiple positions of the block and found the one that makes it easy to grab. Once aligned, the robot's arm is set to the home pose, and in the <code>set_ee_cartesian_trajectory()</code> <code>z</code> is set to <code>-0.25</code> which makes the arm reach the ground from the home position, where the block would be. This function internally uses MoveIt to check if a plan exists to reach the specified position and executes if one exists.
 
           <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2F8f35c934f755259fcaecc0463301a5b61adc14c7%2Fblockbot.py%23L140-L148&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
         </p>
