@@ -22,6 +22,7 @@
     <a href="#introduction">INTRODUCTION</a>
     <a href="#locobot">LOCOBOT PX100</a>
     <a href="#objective">OBJECTIVE</a>
+    <a href="#apriltag">APRILTAG</a>
     <a href="#kinematics">IK</a>
     <a href="#demo">DEMO</a>
     <a href="#credits">CREDITS</a>
@@ -81,18 +82,31 @@
         <center><img src="/assets/images/Project_Flow_Chart.png" style="width:90%;" class="w3-margin-top"></center>
       </div>
 
+      <div id="apriltag">
+        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">APRILTAG</span></h5>
+        <p class="content">
+          AprilTag is a visual fiducial system, useful for a wide variety of tasks including augmented reality, robotics, and camera calibration. Targets can be created from an ordinary printer, and the AprilTag detection software computes the precise 3D position, orientation, and identity of the tags relative to the camera. The AprilTag library is implemented in C with no external dependencies. It is designed to be easily included in other applications, as well as be portable to embedded devices. Real-time performance can be achieved even on cell-phone grade processors [from <a href="https://april.eecs.umich.edu/software/apriltag" target="_blank">AprilTag</a> website].
+        </p>
+        <p class="content">
+          In this project, AprilTags were used to identify the block and the landmarks. The <code>/tag_detections</code> topic provides the list of AprilTag detections. The relevant AprilTags are extracted from this and stored in the class variables (check <code>get_tag_data()</code>).
+        </p>
+      </div>
+
       <div id="kinematics">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">INVERSE KINEMATICS</span></h5>
         <p class="content">
           The first subgoal was to get the block grabbing work. Since the LoCoBot PX100 has only 4 degrees of freedom, the arm didn't have much field of reach for the end effector. So we chose to align the robot with the block so it always end up in a position which makes it easier to grab.
-
-          For the alignment part, the block is expected to be near the robot. The robot looks in the nearby field (hence the camera tilt at the beginning), and then slowly rotates or moves forward to align with the block. The slow motion ensures proper position and accurate April Tag readings. The alignmnet stops once the robot is at a specific distance and angle with respect to the block.
+        </p>
+        <p class="content">
+          For the alignment part in <code>align_with_block()</code>, the block is expected to be near the robot. The robot looks in the nearby field (hence the camera tilt at the beginning), and then slowly rotates or moves forward to align with the block. The slow motion ensures proper position and accurate April Tag readings. The alignmnet stops once the robot is at a specific distance and angle with respect to the block.
 
           <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2F8f35c934f755259fcaecc0463301a5b61adc14c7%2Fblockbot.py%23L205-L243&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
 
-          To obtain these fixed distance and angle of alignment, we've experimented with multiple positions of the block and found the one that makes it easy to grab. Once aligned, the robot's arm is set to the home pose, and in the <code>set_ee_cartesian_trajectory()</code> <code>z</code> is set to <code>-0.25</code> which makes the arm reach the ground from the home position, where the block would be. This function internally uses MoveIt to check if a plan exists to reach the specified position and executes if one exists.
+          To obtain these fixed distance and angle of alignment, we've experimented with multiple positions of the block and found the one that makes it easy to grab. Once aligned the <code>grab_block()</code> function is used to grab the block. The robot's arm is set to the home pose, and in the <code>set_ee_cartesian_trajectory()</code>, <code>z</code> is set to <code>-0.25</code> which makes the arm reach the ground from the home position, where the block would be. This function internally uses MoveIt to check if a plan exists to reach the specified position and executes if one exists.
 
           <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2F8f35c934f755259fcaecc0463301a5b61adc14c7%2Fblockbot.py%23L140-L148&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
+
+          The bin was placed just behind the initial pose of the robot, so dropping the block is simple, the robot
         </p>
       </div>
 
@@ -109,6 +123,11 @@
             <iframe width="560" height="315" src="https://www.youtube.com/embed/OkzbEALzFM8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           </div>
         </center>
+      </div>
+
+      <div id="extensions">
+        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">FUN EXTENSIONS</span></h5>
+
       </div>
 
       <div id="credits">
