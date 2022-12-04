@@ -12,7 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </head>
 
 <body>
@@ -22,24 +22,33 @@
     <a href="#introduction">INTRODUCTION</a>
     <a href="#locobot">LOCOBOT PX100</a>
     <a href="#objective">OBJECTIVE</a>
-    <a href="#kinematics">INVERSE KINEMATICS</a>
+    <a href="#kinematics">IK</a>
+    <a href="#demo">DEMO</a>
     <a href="#credits">CREDITS</a>
     <a href="#references">REFERENCES</a>
   </div>
 
   <span id="menu-icon" onclick="openNav()" class="material-symbols-outlined menu-icon">menu</span>
 
-  <header class="bgimg w3-display-container w3-grayscale-min" id="home">
+  <header class="bgimg w3-display-container" id="home">
     <div class="w3-display-right stroke">
       <span class="w3-text-white" style="font-size:35px">Real Robotics Planning <br>and Control with LoCoBot</span>
     </div>
   </header>
 
   <div id="main">
-    <div class="w3-sand w3-grayscale w3-large">
+    <div class="w3-sand w3-large">
       <div id="introduction">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">INTRODUCTION</span></h5>
-        <p class="content">This is a project done as a part of the CS685 Autonomous Robotics course at George Mason University. We've wanted to work on a real robot and chose to work on the <a href="https://www.trossenrobotics.com/locobot-px100.aspx" target="_blank">LoCoBot PX100</a>, as the Interbotix APIs make it easier to work with. We've chosen a problem that incorporates the concepts of Inverse Kinematics, Control, Probabilistic Robotics, Tracking and Localization, SLAM taught in the <a href="https://cs.gmu.edu/media/syllabi/Fall2022/CS_685SteinG001.pdf" target="_blank">course</a>. The project was developed using <a href="http://wiki.ros.org/noetic" target="_blank">ROS Noetic</a></p>
+        <p class="content">This project was done as a part of the CS685 Autonomous Robotics course at George Mason University. We've wanted to work on a real robot and chose to work on the <a href="https://www.trossenrobotics.com/locobot-px100.aspx" target="_blank">LoCoBot PX100</a>, as the Interbotix APIs make it easier to work with. We've chosen a problem that incorporates the concepts of Inverse Kinematics, Control, Probabilistic Robotics, Tracking and Localization, SLAM taught in the <a href="https://cs.gmu.edu/media/syllabi/Fall2022/CS_685SteinG001.pdf" target="_blank">course</a>. The project was developed using <a href="http://wiki.ros.org/noetic" target="_blank">ROS Noetic</a>.</p>
+
+        <p class="content">
+          This tutorial is an informal introduction to using the LoCoBot and a walkthrough of each of the components that make up our project. We'll also discuss some practical tips and the challenges we faced. The LoCoBots offer a variety of sensors and capabilities that are very accessible to beginners, students, and researchers. We only scratched the surface of what is possible. We hope that sharing our experience through this tutorial will assist future students in leveraging the GMU Autonomous Robotics Lab's fleet of LoCoBots. We look forward to the cool projects to come!
+        </p>
+
+        <p class="content">
+          <span class="material-symbols-outlined" style="color: #FF7900;vertical-align: text-bottom;">warning</span> Warning: You will have a ton of fun working with a real robot. It will also take a lot more time than you think and be full of unexpected challenges. Be prepared for some long days and late nights! We highly recommend breaking your project down into distinct subgoals and make incremental progress. The sections in this tutorial are the subgoals we achieved in an order. Be ambitious, but have a plan and get started right away.
+        </p>
       </div>
 
       <div id="locobot">
@@ -64,13 +73,6 @@
         </div>
       </div>
 
-      <div id="IK">
-        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">GRASPING AND INVERSE KINEMATICS</span></h5>
-        <p class="content">
-          The LoCoBot PX100 is
-        </p>
-      </div>
-
       <div id="objective">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">PROJECT OBJECTIVE - TOY COLLECTION</span></h5>
         <p class="content">
@@ -79,10 +81,27 @@
         <center><img src="/assets/images/Project_Flow_Chart.png" style="width:90%;" class="w3-margin-top"></center>
       </div>
 
+      <div id="kinematics">
+        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">GRASPING AND INVERSE KINEMATICS</span></h5>
+        <p class="content">
+          The first subgoal was to get the block grabbing work.
+
+          <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2F8f35c934f755259fcaecc0463301a5b61adc14c7%2Fblockbot.py%23L140-L148&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
+        </p>
+      </div>
+
       <!-- <div id="code">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">BLOCKBOT.PY</span></h5>
         <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2F8f35c934f755259fcaecc0463301a5b61adc14c7%2Fblockbot.py%23L159-L182&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
       </div> -->
+
+      <div id="demo">
+        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">DEMO</span></h5>
+        <p class="content">Here's a demo of the robot completing the <a href="#objective">plan</a>.</p>
+        <div id="video-container">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/OkzbEALzFM8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
 
       <div id="credits">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">CREDITS</span></h5>
@@ -100,7 +119,7 @@
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">REFERENCES</span></h5>
         <p class="content">
         <ul>
-          <li><a href="https://april.eecs.umich.edu/software/apriltag#:~:text=AprilTags%20are%20conceptually%20similar%20to,robustly%20and%20from%20longer%20ranges." target="_blank">AprilTags</a></li>
+          <li><a href="http://wiki.ros.org/apriltag_ros" target="_blank">AprilTags</a></li>
           <li><a href="https://www.trossenrobotics.com/docs/interbotix_xsarms/index.html" target="_blank">Interbotix Arms</a></li>
           <li><a href="https://github.com/Interbotix/interbotix_ros_toolboxes/blob/cdb8e7b77eb6be31d20bc77c947f5ba34525f4ec/interbotix_xs_toolbox/interbotix_xs_modules/src/interbotix_xs_modules/locobot.py" target="_blank">Interbotix LoCoBot API</a></li>
           <li><a href="https://pidexplained.com/how-to-tune-a-pid-controller/" target="_blank">How to tune PID Controller</a></li>
@@ -113,7 +132,7 @@
 
     <footer class="w3-center w3-light-grey w3-padding-48 w3-large">
       <p>A project by <a href="https://www.linkedin.com/in/aaron-pollon-8a8b2246/" target="_blank">Aaron Pollon</a>, <a href="https://www.linkedin.com/in/sai-kishore-salaka-0112358/" target="_blank">Sai Kishore Salaka</a>, and <a href="https://www.linkedin.com/in/sashankkakaraparty/" target="_blank">Sai Sashank</a></p>
-      <p>Website powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+      <p style="font-size: 12px; position: absolute; right: 36px;">Website powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
     </footer>
   </div>
 </body>
