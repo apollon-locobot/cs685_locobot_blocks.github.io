@@ -21,9 +21,11 @@
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a href="#introduction">INTRODUCTION</a>
     <a href="#locobot">LOCOBOT PX100</a>
+    <a href="#quick-guide">QUICK GUIDE</a>
     <a href="#objective">OBJECTIVE</a>
     <a href="#apriltag">APRILTAG</a>
     <a href="#kinematics">IK</a>
+    <a href="#rosbag">ROSBAG</a>
     <a href="#demo">DEMO</a>
     <a href="#credits">CREDITS</a>
     <a href="#references">REFERENCES</a>
@@ -41,14 +43,14 @@
     <div class="w3-sand w3-large">
       <div id="introduction">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">INTRODUCTION</span></h5>
-        <p class="content">This project was done as a part of the CS685 Autonomous Robotics course at George Mason University. We've wanted to work on a real robot and chose to work on the <a href="https://www.trossenrobotics.com/locobot-px100.aspx" target="_blank">LoCoBot PX100</a>, as the Interbotix APIs make it easier to work with. We've chosen a problem that incorporates the concepts of Inverse Kinematics, Control, Probabilistic Robotics, Tracking and Localization, SLAM taught in the <a href="https://cs.gmu.edu/media/syllabi/Fall2022/CS_685SteinG001.pdf" target="_blank">course</a>. The project was developed using <a href="http://wiki.ros.org/noetic" target="_blank">ROS Noetic</a>.</p>
+        <p class="content">This project was done as a part of the CS685 Autonomous Robotics course at George Mason University. We were interested in experimenting with a real robot and chose to work on the <a href="https://www.trossenrobotics.com/locobot-px100.aspx" target="_blank">LoCoBot PX100</a>, since the Interbotix APIs make it easier to work with. We chosen a problem that incorporates the concepts of Inverse Kinematics, Control, Probabilistic Robotics, Tracking and Localization, SLAM taught in the <a href="https://cs.gmu.edu/media/syllabi/Fall2022/CS_685SteinG001.pdf" target="_blank">course</a>. The project was developed using <a href="http://wiki.ros.org/noetic" target="_blank">ROS Noetic</a>, which the LoCoBot supports seamlessly.</p>
 
-        <p class="content">
+        <p class="content next">
           This tutorial is an informal introduction to using the LoCoBot and a walkthrough of each of the components that make up our project. We'll also discuss some practical tips and the challenges we faced. The LoCoBots offer a variety of sensors and capabilities that are very accessible to beginners, students, and researchers. We only scratched the surface of what is possible. We hope that sharing our experience through this tutorial will assist future students in leveraging the GMU Autonomous Robotics Lab's fleet of LoCoBots. We look forward to the cool projects to come!
         </p>
 
         <p class="content">
-          <span class="material-symbols-outlined" style="color: #FF7900;vertical-align: text-bottom;">warning</span> Warning: You will have a ton of fun working with a real robot. It will also take a lot more time than you think and be full of unexpected challenges. Be prepared for some long days and late nights! We highly recommend breaking your project down into distinct subgoals and make incremental progress. The sections in this tutorial are the subgoals we achieved in an order. Be ambitious, but have a plan and get started right away.
+          <span class="material-symbols-outlined" style="color: #FF7900;vertical-align: text-bottom;">warning</span> Warning: You will have a ton of fun working with a real robot. It will also take a lot more time than you think and be full of unexpected challenges. Be prepared for some long days and late nights! We highly recommend breaking your project down into distinct subgoals and make incremental progress. The sections in this tutorial are the subgoals we achieved in an order to complete this project. Be ambitious, but have a plan and get started right away.
         </p>
       </div>
 
@@ -74,21 +76,38 @@
         </div>
       </div>
 
+      <div id="quick-guide">
+        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">QUICK GUIDE</span></h5>
+        <p class="content">
+          <i>Add a quick guide on how to use LoCoBot and anything to work on this project.</i>
+        </p>
+      </div>
+
       <div id="objective">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">PROJECT OBJECTIVE - TOY COLLECTION</span></h5>
         <p class="content">
-          The Robot searches for a block in its view, travels to it, aligns itself, picks the block, travels back to the origin, and drops it in the bin.
+          The complete goal of the problem is for the robot to search for a block using its AprilTag, travel to almost near the block using landmark SLAM, pickup the block using Inverse Kinematics, travel back to the origin, and drop the block into the bin.
         </p>
         <center><img src="/assets/images/Project_Flow_Chart.png" style="width:90%;" class="w3-margin-top"></center>
       </div>
 
       <div id="apriltag">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">APRILTAG</span></h5>
-        <p class="content">
-          AprilTag is a visual fiducial system, useful for a wide variety of tasks including augmented reality, robotics, and camera calibration. Targets can be created from an ordinary printer, and the AprilTag detection software computes the precise 3D position, orientation, and identity of the tags relative to the camera. The AprilTag library is implemented in C with no external dependencies. It is designed to be easily included in other applications, as well as be portable to embedded devices. Real-time performance can be achieved even on cell-phone grade processors [from <a href="https://april.eecs.umich.edu/software/apriltag" target="_blank">AprilTag</a> website].
-        </p>
+        <div class="w3-panel w3-leftbar w3-light-grey" style="margin: 26px;">
+          <p>
+            <i>
+              AprilTag is a visual fiducial system, useful for a wide variety of tasks including augmented reality, robotics, and camera calibration. Targets can be created from an ordinary printer, and the AprilTag detection software computes the precise 3D position, orientation, and identity of the tags relative to the camera. The AprilTag library is implemented in C with no external dependencies. It is designed to be easily included in other applications, as well as be portable to embedded devices. Real-time performance can be achieved even on cell-phone grade processors.
+            </i>
+          </p>
+          <p>
+            <a href="https://april.eecs.umich.edu/software/apriltag" target="_blank">AprilTag</a> website
+          </p>
+        </div>
         <p class="content">
           In this project, AprilTags were used to identify the block and the landmarks. The <code>/tag_detections</code> topic provides the list of AprilTag detections. The relevant AprilTags are extracted from this and stored in the class variables (check <code>get_tag_data()</code>).
+        </p>
+        <p class="content">
+          <b>How to parse AprilTag values:</b>
         </p>
       </div>
 
@@ -110,10 +129,10 @@
         </p>
       </div>
 
-      <!-- <div id="code">
-        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">BLOCKBOT.PY</span></h5>
-        <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2F8f35c934f755259fcaecc0463301a5b61adc14c7%2Fblockbot.py%23L159-L182&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
-      </div> -->
+      <div id="rosbag">
+        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">ROSBAG</span></h5>
+        <i>Add details on how to use rosbag and why it's useful.</i>
+      </div>
 
       <div id="demo">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">DEMO</span></h5>
@@ -158,7 +177,7 @@
     </div>
 
     <footer class="w3-center w3-light-grey w3-padding-48 w3-large">
-      <p>A project by <a href="https://www.linkedin.com/in/aaron-pollon-8a8b2246/" target="_blank">Aaron Pollon</a>, <a href="https://www.linkedin.com/in/sai-kishore-salaka-0112358/" target="_blank">Sai Kishore Salaka</a>, and <a href="https://www.linkedin.com/in/sashankkakaraparty/" target="_blank">Sai Sashank</a></p>
+      <p>A project by <a href="https://www.linkedin.com/in/aaron-pollon-8a8b2246/" target="_blank">Aaron Pollon</a>, <a href="https://www.linkedin.com/in/sai-kishore-salaka-0112358/" target="_blank">Sai Kishore Salaka</a>, and Sai Sashank</p>
       <p style="font-size: 12px; position: absolute; right: 36px;">Website powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
     </footer>
   </div>

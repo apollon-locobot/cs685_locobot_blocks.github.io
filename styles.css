@@ -5,10 +5,10 @@ html {
 }
 
 .bgimg {
-  background-position: center;
+  background-position: 70% 70%;
   background-size: cover;
-  background-image: url("/assets/images/cover-image.jpg");
-  min-height: 75%;
+  background-image: url("/assets/images/IMG_2132.jpg");
+  min-height: 70%;
 }
 
 .menu {
@@ -17,7 +17,7 @@ html {
 
 .w3-display-right {
   position: absolute;
-  top: 75%;
+  top: 20%;
   right: 5%;
   transform: translate(0%, -50%);
   -ms-transform: translate(0%, -50%)
@@ -114,7 +114,7 @@ a:hover {
 .sidenav a {
   padding: 8px 8px 8px 32px;
   text-decoration: none;
-  font-size: 25px;
+  font-size: 20px;
   color: #818181;
   display: block;
   transition: 0.3s;
