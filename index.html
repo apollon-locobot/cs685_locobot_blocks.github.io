@@ -82,9 +82,15 @@
       </div>
 
       <div id="kinematics">
-        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">GRASPING AND INVERSE KINEMATICS</span></h5>
+        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">INVERSE KINEMATICS</span></h5>
         <p class="content">
-          The first subgoal was to get the block grabbing work.
+          The first subgoal was to get the block grabbing work. Since the LoCoBot PX100 has only 4 degrees of freedom, the arm didn't have much field of reach for the end effector. So we chose to align the robot with the block so it always end up in a position which makes it easier to grab.
+
+          For the alignment part, the block is expected to be near the robot. The robot looks in the nearby field (hence the camera tilt at the beginning), and then slowly rotates or moves forward to align with the block. The slow motion ensures proper position and accurate April Tag readings. The alignmnet stops once the robot is at a specific distance and angle with respect to the block.
+
+          <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2F8f35c934f755259fcaecc0463301a5b61adc14c7%2Fblockbot.py%23L205-L243&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
+
+          To obtain these fixed distance and angle of alignment, we've experimented with multiple positions of the block and found the one that makes it easy to grab. Once aligned, the robot's arm is set to the home pose, and in the <code>set_ee_cartesian_trajectory()</code> <code>z</code> is set to <code>-0.25</code> which makes the arm reach the ground from the home position, where the block would be.
 
           <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2F8f35c934f755259fcaecc0463301a5b61adc14c7%2Fblockbot.py%23L140-L148&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
         </p>
@@ -97,10 +103,12 @@
 
       <div id="demo">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">DEMO</span></h5>
-        <p class="content">Here's a demo of the robot completing the <a href="#objective">plan</a>.</p>
-        <div id="video-container">
-          <iframe width="560" height="315" src="https://www.youtube.com/embed/OkzbEALzFM8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
+        <p class="content">Here's a demo of the robot following the <a href="#objective">plan</a>.</p>
+        <center>
+          <div id="video-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/OkzbEALzFM8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </center>
       </div>
 
       <div id="credits">
