@@ -236,8 +236,12 @@
             <iframe width="560" height="315" src="https://www.youtube.com/embed/OkzbEALzFM8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           </div>
         </center>
-        <!-- TODO: Sai -->
-        <i>Describe the results</i>
+        <p class="content">
+          <b>Description:</b> <br>
+          <span style="margin-left: 32px;">
+            The robot starts at the origin (x=0, y=0, yaw=0) with the bin right behind it (x=0, y=0, yaw=-π). The landmarks (large AprilTags) were placed on the ground, the block was placed withing the camera's search tilt view. Once initiated, the robot finds the block, calculates the bearing & range, moves forward until it is 35 cms away from the block. Then, it tilts the camera to aligning angle and slowly aligns itself until the block is straight ahead of the gripper (angle=0) and the block is 32.5 cms away from the robot. The arm then goes to the home pose, then moves to the ground, grabs the block, and moves the arm to sleep pose. In the motion towards the block, the landmark localization using GTSAM keeps running to accurately estimate the position of the robot. It uses this information to travel back to the origin, but to the bin's pose (0, 0, -π). Now the robot just needs to move the arm to the home pose, move forward, drop the block, move back, move the arm to sleep pose, and rotates back to the initial pose (0, 0, 0).
+          </span>
+        </p>
       </div>
 
       <div id="conclusion">
