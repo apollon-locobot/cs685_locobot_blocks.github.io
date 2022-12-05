@@ -29,15 +29,15 @@
     <a href="#quick-guide">QUICK GUIDE</a>
     <a href="#objective">OBJECTIVE</a>
     <a href="#apriltag">APRILTAG</a>
-    <a href="#kinematics">IK</a>
     <a href="#bearing-range">BEARING & RANGE</a>
+    <a href="#kinematics">IK</a>
     <a href="#landmark-slam">LANDMARK SLAM</a>
     <a href="#pid">PID CONTROL</a>
     <a href="#rosbag">ROSBAG</a>
     <a href="#demo">DEMO</a>
     <a href="#conclusion">CONCLUSION</a>
     <a href="#extensions">FUN EXTENSIONS</a>
-    <a href="#tips">TIPS & SIMPLIFICATIONS</a>
+    <a href="#tips">SIMPLIFICATIONS & TIPS</a>
     <a href="#credits">CREDITS</a>
     <a href="#references">REFERENCES</a>
   </div>
@@ -92,6 +92,7 @@
           <li>The local website</li>
           <li>arm, camera, base, joints, etc of the bot</li>
           <li>python scipt</li>
+          <li>Nav Stack - https://www.trossenrobotics.com/docs/interbotix_xslocobots/ros_packages/navigation_stack_configuration.html</li>
         </ul>
         </p>
       </div>
@@ -122,7 +123,6 @@
         <p class="content">
           In this project, AprilTags were used to identify the block and the landmarks. The <code>/tag_detections</code> topic provides the list of AprilTag detections. The relevant AprilTags are extracted from this and stored in the class variables (check <code>get_tag_data()</code>).
         </p>
-        <!-- TODO: Sai -->
         <p class="content">
           <b>Understanding AprilTag values:</b> <br>
           <span style="margin-left: 32px;">
@@ -181,6 +181,14 @@
         </div>
       </div>
 
+      <div id="bearing-range">
+        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">BEARING & RANGE</span></h5>
+        <!-- TODO: Sai -->
+        <ul>
+          <li>Talk about shift in camera x and y, with respect to the robot center</li>
+        </ul>
+      </div>
+
       <div id="kinematics">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">INVERSE KINEMATICS</span></h5>
         <p class="content">
@@ -197,14 +205,6 @@
 
           The bin was placed just behind the initial pose of the robot, so dropping the block is simple, the robot
         </p>
-      </div>
-
-      <div id="bearing-range">
-        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">BEARING & RANGE</span></h5>
-        <!-- TODO: Sai -->
-        <ul>
-          <li>Talk about shift in camera x and y, with respect to the robot center</li>
-        </ul>
       </div>
 
       <div id="landmark-slam">
@@ -255,13 +255,21 @@
       </div>
 
       <div id="tips">
-        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">TIPS & SIMPLIFICATIONS</span></h5>
-        <!-- TODO: Sai -->
+        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">SIMPLIFICATIONS & TIPS</span></h5>
+        <p class="content">
+          Here are some things that made our life easy (😉):
         <ul>
-          <li>How to setup VS Code for dev</li>
-          <li>You may use /scan topic for LIDAR readings</li>
-          <li>How to use RViz to visualize Robot environment</li>
+          <li>To avoid using Deep Learning models, like YOLO, to find the block using vision, we've added an AprilTag to the block</li>
+          <li>Since there are two camera angles to search for the block from far away and then align when near the block, two AprilTags were added for accurate detections in both tilts</li>
+          <li>The bin, in which the block is dropped, is placed right behind the initial pose so the robot doesn't have to search for the bin</li>
+          <li>Since the motion after finding the block in search is faster than the alignment motion, the robot travels to exactly 35 cms away from the block (the robot can grab the block when it's 32.5 cms away)</li>
+          <li>The path to the block and the bin is free from obstacles</li>
+          <li>The landmark AprilTags were placed on the ground, to make use of the same camera tilt used for search and not switch between tilts. Only camera tilts were used, no pans</li>
+          <li>When in motion, a validation is added to check if the base bumper hits anything to stop the motion (no rogue tobots!)</li>
+          <li>The topic <code>/scan</code> can be used to get the LIDAR readings</li>
+          <li>Setting <a href="https://code.visualstudio.com/docs/remote/ssh" target="_blank">Remote Development using SSH</a> in VS Code could save lots of time</li>
         </ul>
+        </p>
       </div>
 
       <div id="credits">
