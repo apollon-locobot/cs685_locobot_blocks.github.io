@@ -30,7 +30,7 @@
     <a href="#objective">OBJECTIVE</a>
     <a href="#apriltag">APRILTAG</a>
     <a href="#bearing-range">BEARING & RANGE</a>
-    <a href="#kinematics">IK</a>
+    <a href="#kinematics">SEARCH & IK</a>
     <a href="#landmark-slam">LANDMARK SLAM</a>
     <a href="#pid">PID CONTROL</a>
     <a href="#rosbag">ROSBAG</a>
@@ -44,15 +44,17 @@
 
   <span id="menu-icon" onclick="openNav()" class="material-symbols-outlined menu-icon">menu</span>
 
-  <div id="main">
+  <div id="main" onclick="closeNav()">
     <div class="w3-sand w3-large">
       <div id="introduction">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">INTRODUCTION</span></h5>
-        <p class="content">This project was done as a part of the CS685 Autonomous Robotics course at George Mason University. We were interested in experimenting with a real robot and chose to work on the <a href="https://www.trossenrobotics.com/locobot-px100.aspx" target="_blank">LoCoBot PX100</a>, since the Interbotix APIs make it easier to work with. We chose a "toy problem" (🙂) that incorporates the concepts of Inverse Kinematics, Control, Probabilistic Robotics, Tracking and Localization, SLAM taught in the <a href="https://cs.gmu.edu/media/syllabi/Fall2022/CS_685SteinG001.pdf" target="_blank">course</a>, to let a robot navigate through and interact with the environment to perform basic tasks. The project was developed using <a href="http://wiki.ros.org/noetic" target="_blank">ROS Noetic</a>, which the LoCoBot supports seamlessly.</p>
+        <p class="content">This project was done as a part of the CS685 Autonomous Robotics course at George Mason University. We were interested in experimenting with a real robot and chose to work on the <a href="https://www.trossenrobotics.com/locobot-px100.aspx" target="_blank">LoCoBot PX100</a>, since the Interbotix APIs make it easier to work with. We chose a "toy problem" (🙂) that incorporates the concepts of Inverse Kinematics, Control, Probabilistic Robotics, Tracking and Localization, SLAM that were taught in the <a href="https://cs.gmu.edu/media/syllabi/Fall2022/CS_685SteinG001.pdf" target="_blank">course</a>, to let a robot navigate through and interact with the environment to perform basic tasks. The project was developed using <a href="http://wiki.ros.org/noetic" target="_blank">ROS Noetic</a>, which the LoCoBot supports seamlessly.</p>
 
         <p class="content next">
           This tutorial is an informal introduction to using the LoCoBot and a walkthrough of each of the components that make up our project. We'll also discuss some practical tips and the challenges we faced. The LoCoBots offer a variety of sensors and capabilities that are very accessible to beginners, students, and researchers. We only scratched the surface of what is possible. We hope that sharing our experience through this tutorial will assist future students in leveraging the GMU Autonomous Robotics Lab's fleet of LoCoBots. We look forward to the cool projects to come!
         </p>
+
+        <center><img src="/assets/images/locobots.jpg" style="width:20%;" class="w3-margin-top"></center>
 
         <p class="content">
           <span class="material-symbols-outlined" style="color: #FF7900;vertical-align: text-bottom;">warning</span> Warning: You will have a ton of fun working with a real robot. It will also take a lot more time than you think and be full of unexpected challenges. Be prepared for some long days and late nights! We highly recommend breaking your project down into distinct subgoals and make incremental progress. The sections in this tutorial are the subgoals we achieved in an order to complete this project. Be ambitious, but have a plan and get started right away.
@@ -92,7 +94,7 @@
           <li>The local website</li>
           <li>arm, camera, base, joints, etc of the bot</li>
           <li>python scipt</li>
-          <li>Nav Stack - https://www.trossenrobotics.com/docs/interbotix_xslocobots/ros_packages/navigation_stack_configuration.html</li>
+          <li>Nav Stack - https://www.trossenrobotics.com/docs/interbotix_xslocobots/ros_packages/navigation_stack_configuration.html (LoCoBot needs to be connected to a monitor for this)</li>
         </ul>
         </p>
       </div>
@@ -121,12 +123,12 @@
           </p>
         </div>
         <p class="content">
-          In this project, AprilTags were used to identify the block and the landmarks. The <code>/tag_detections</code> topic provides the list of AprilTag detections. The relevant AprilTags are extracted from this and stored in the class variables (check <code>get_tag_data()</code>).
+          In this project, AprilTags were used to identify the block and the landmarks. The <code>/tag_detections</code> topic provides the list of AprilTag detections. The relevant AprilTag information was extracted from this and stored in the class variables (check <code>get_tag_data()</code>).
         </p>
         <p class="content">
           <b>Understanding AprilTag values:</b> <br>
           <span style="margin-left: 32px;">
-            The raw AprilTag <code>detections</code> provided by <code>/tag_detections</code> topic include the pose and orientation of the AprilTag with respect to the camera (see Fig. 3). To understand the values, let's consider the AprilTag with ID 5 (the tag on the robot arm in Fig. 2). The <code>detections[0].pose.pose.pose</code> has the required information, where <code>position</code> is the estimated position of the AprilTag and the <code>orientation</code> is the tilt of the tag in all dimensions with respect to the camera's field.
+            The raw AprilTag <code>detections</code> provided by <code>/tag_detections</code> topic include the pose and orientation of the AprilTag with respect to the camera (see Fig. 3). To understand the values, let's consider the AprilTag with ID 5 (the tag on the robot arm in Fig. 2). The <code>detections[0].pose.pose.pose</code> has the required information, where <code>position</code> is the estimated position and the <code>orientation</code> is the tilt of the AprilTag with respect to the camera's field.
           </span>
         </p>
         <div class="row">
@@ -144,7 +146,7 @@
           </div>
         </div>
         <p class="content">
-          To understand the <code>position</code>, visualize a line <code>L</code> going from the center of the camera going into the 3D field of view. At the <code>position.z (Z)</code> distance from the camera, draw a 2D plane <code>P</code>, marking its intersection with <code>L</code> as the center of the plane, say <code>O</code>. From this point, <code>position.x (X)</code> is the horizontal distance from the origin <code>O</code> (right-negative, left-positive) and <code>position.y (Y)</code> is the vertical distance form the origin <code>O</code> (top-negative, bottom-positive). The projections in Fig. 4, 5, 6 might be helpful in understanding this.
+          To understand the <code>position</code>, visualize a line <code>L</code> going from the center of the camera going into the 3D field of view. At the <code>position.z (Z)</code> distance from the camera, draw a 2D plane <code>P</code> (that contains the AprilTag), marking its intersection with <code>L</code> as the center of the plane, say <code>O</code>. Now, <code>position.x (X)</code> is the horizontal distance from the origin <code>O</code> (right-negative, left-positive) and <code>position.y (Y)</code> is the vertical distance form the origin <code>O</code> (top-negative, bottom-positive). The projections in Fig. 4, 5, 6 below might be helpful in understanding this.
         </p>
         <div class="row">
           <div class="column">
@@ -167,7 +169,7 @@
           </div>
         </div>
         <p class="content">
-          The <code>size</code> seen in Fig. 3 (i.e., 0.02) is the size of the AprilTag configured in <code>~/mds-locobot/apriltag-files/tags.yml</code>.
+          The <code>size</code> seen in Fig. 3 (i.e., 0.02) is the size of the AprilTag configured in <code>~/mds-locobot/apriltag-files/tags.yml</code> Any new AprilTags should be added to this file.
         </p>
         <div class="w3-panel w3-leftbar w3-light-grey" style="margin: 26px;">
           <p>
@@ -190,20 +192,22 @@
       </div>
 
       <div id="kinematics">
-        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">INVERSE KINEMATICS</span></h5>
+        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">SEARCH & INVERSE KINEMATICS</span></h5>
         <p class="content">
-          The first subgoal was to get the block grabbing work. Since the LoCoBot PX100 has only 4 degrees of freedom, the arm didn't have much field of reach for the end effector. So we chose to align the robot with the block so it always end up in a position which makes it easier to grab.
+          The first subgoal was to search the block by rotating and grab it, when the base is stationary. Then the robot was certain of its location when SLAM was implemented, so we integrated motion with PID and started searching for the block outside its view. When initiated, the robot first looks for the block in its current view, then on its left, and then on its right (rotating by <code>ROTATION_INCREMENT</code> w.r.t origin). If the robot doesn't find the block it moves forward by <code>SEARCH_INCREMENT_X</code> meters. If in any of the view the robot finds the block, it travels to a point that is <code>BLOCK_TRAVEL_RADIUS</code> meters away from the block and starts alignment. As the robot searches in one direction, we only check left, straight, and right covering specific field only. The search code is available <code>find_goal()</code>.
+
+          <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2F5f9e61d8196ca24718a6d3e725c17d75670eaf8c%2Fblockbot.py%23L166-L209&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
+
         </p>
+
         <p class="content">
-          For the alignment part in <code>align_with_block()</code>, the block is expected to be near the robot. The robot looks in the nearby field (hence the camera tilt at the beginning), and then slowly rotates or moves forward to align with the block. The slow motion ensures proper position and accurate April Tag readings. The alignmnet stops once the robot is at a specific distance and angle with respect to the block.
+          Since the LoCoBot PX100 has only 4 degrees of freedom, the arm doesn't have a wide field of reach for the end effector. So we chose to align the robot with the block so it always end up in a position that makes it easier to grab the block. For the alignment part in <code>align_with_block()</code>, the block is expected to be near the robot. The robot looks in the nearby field (hence the camera tilt at the beginning), and then slowly rotates or moves forward using PID controllers until the block is in <code>[-ALIGN_BEARING_ACCEPTANCE, ALIGN_BEARING_ACCEPTANCE]</code> and <code>[-ALIGN_RADIUS_ACCEPTANCE, ALIGN_RADIUS_ACCEPTANCE]</code> ranges. As PID controllers are used, the motion is inversely proportional to the distance/angle from the block, whcih ensures accurate alignment with the block.
 
-          <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2F8f35c934f755259fcaecc0463301a5b61adc14c7%2Fblockbot.py%23L205-L243&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
+          <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2F5f9e61d8196ca24718a6d3e725c17d75670eaf8c%2Fblockbot.py%23L248-L294&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
 
-          To obtain these fixed distance and angle of alignment, we've experimented with multiple positions of the block and found the one that makes it easy to grab. Once aligned the <code>grab_block()</code> function is used to grab the block. The robot's arm is set to the home pose, and in the <code>set_ee_cartesian_trajectory()</code>, <code>z</code> is set to <code>-0.25</code> which makes the arm reach the ground from the home position, where the block would be. This function internally uses MoveIt to check if a plan exists to reach the specified position and executes if one exists.
+          To obtain these fixed distance and angle of alignment, we've experimented with multiple positions of the block and found the one that makes it easy to grab. Once aligned the <code>grab_block()</code> function is used to grab the block. The robot's arm is set to the home pose, and in the <code>set_ee_cartesian_trajectory()</code>, <code>z</code> is set to <code>-0.25</code> which makes the arm reach the ground from the home position. At this point the block would be withing the grippers range but at a little far, to account for any errors in alignment. Then the robot moves forward by <code>GRABBING_ERROR_DISTANCE</code> meters, grabs the block, and returns the arm to the sleep pose. This function internally uses MoveIt to check if a plan exists to reach the specified position and executes if one exists.
 
-          <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2F8f35c934f755259fcaecc0463301a5b61adc14c7%2Fblockbot.py%23L140-L148&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
-
-          The bin was placed just behind the initial pose of the robot, so dropping the block is simple, the robot
+          <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2F977e8ff2cbe6b5e445cd00590cf8ced1bcd3f0a8%2Fblockbot.py%23L145-L156&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
         </p>
       </div>
 
@@ -233,13 +237,13 @@
         <p class="content">Here's a demo of the robot following the <a href="#objective">plan</a>.</p>
         <center>
           <div id="video-container">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/OkzbEALzFM8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/rwvMlPIRUuM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           </div>
         </center>
         <p class="content">
           <b>Description:</b> <br>
           <span style="margin-left: 32px;">
-            The robot starts at the origin (x=0, y=0, yaw=0) with the bin right behind it (x=0, y=0, yaw=-π). The landmarks (large AprilTags) were placed on the ground, the block was placed withing the camera's search tilt view. Once initiated, the robot finds the block, calculates the bearing & range, moves forward until it is 35 cms away from the block. Then, it tilts the camera to aligning angle and slowly aligns itself until the block is straight ahead of the gripper (angle=0) and the block is 32.5 cms away from the robot. The arm then goes to the home pose, then moves to the ground, grabs the block, and moves the arm to sleep pose. In the motion towards the block, the landmark localization using GTSAM keeps running to accurately estimate the position of the robot. It uses this information to travel back to the origin, but to the bin's pose (0, 0, -π). Now the robot just needs to move the arm to the home pose, move forward, drop the block, move back, move the arm to sleep pose, and rotates back to the initial pose (0, 0, 0).
+            The robot starts at the origin (x=0, y=0, yaw=0) with the bin right behind it (x=0, y=0, yaw=-π). The landmarks (large AprilTags) were placed on the ground, the block was placed within the <code>CAMERA_SETTINGS.search_tilt</code> view. Once initiated, the robot searches for the block infront, left, and right of it. As the block isn't detectedm the robot moves forward by <code>SEARCH_INCREMENT_X</code> meters, and searches in the three fields of view again. Though the block can be seen now, it isn't withing <code>BLOCK_DETECTION_RANGE</code> meters, so it moves forward. Now, as the block is nearby, the robot travels in the direction of the block such that it is <code>BLOCK_TRAVEL_RADIUS</code> meters away from the block. It tilts the camera to <code>CAMERA_SETTINGS.tilt</code> and starts aligning with the block until it is <code>GRABBING_RADIUS</code> away from the block. The arm then goes to the home pose, then to the ground, move forward by <code>GRABBING_ERROR_DISTANCE</code> meters, grabs the block, and returns the arm to the sleep pose. When in motion, the robot detects the landmarks on the ground and uses landmark localization through GTSAM to accurately predict its location. With the block grabbed, the robot travels back to the origin, but to the bin's pose (0, 0, -π). It then moves the arm to the home pose, moves forward, dropts the block, moves the arm to the sleep pose, and rotates back to the initial pose (0, 0, 0).
           </span>
         </p>
       </div>
@@ -260,7 +264,6 @@
           Here are some subgoals we wanted to achieve, but couldn't because of the limited time:
         <ul>
           <li><b>Multi-block search</b> - Perform the same plan, go back and search for another block</li>
-          <li><b>Handle erroneous block pickup</b> - If the block wasn't picked up (due to an error in range estimation), which can be identified from the gripper joint value, move back and align with the block again</li>
           <li><b>Bin search</b> - Just like the block, search for the bin in the environment</li>
           <li><b>Block sorting</b> - Have multiple bins and blocks, place a block in a specific bin</li>
         </ul>
@@ -272,10 +275,12 @@
         <p class="content">
           Here are some things that made our life easy (😉):
         <ul>
-          <li>To avoid using Deep Learning models, like YOLO, to find the block using vision, we've added an AprilTag to the block</li>
-          <li>Since there are two camera angles to search for the block from far away and then align when near the block, two AprilTags were added for accurate detections in both tilts</li>
+          <li>To avoid using Deep Learning models (like YOLO) to find the block using vision, we've added an AprilTag to the block</li>
+          <li>Since there are two camera tilts to search for the block from far away and align when near the block, two AprilTags were added for accurate detections in both tilts</li>
+          <center><img src="/assets/images/block.jpg" style="width:15%;" class="w3-margin-top"></center>
           <li>The bin, in which the block is dropped, is placed right behind the initial pose so the robot doesn't have to search for the bin</li>
-          <li>Since the motion after finding the block in search is faster than the alignment motion, the robot travels to exactly 35 cms away from the block (the robot can grab the block when it's 32.5 cms away)</li>
+          <li>Since the motion after finding the block in search is faster than the alignment motion, the robot travels to a distance away from the block to speed the plan</li>
+          <li>Since the AprilTag on the block is small, the robot might not track it all the times. So the search has a threshold that ensures travel doesn't start until the block is within <code>BLOCK_DETECTION_RANGE</code> meters</li>
           <li>The path to the block and the bin is free from obstacles</li>
           <li>The landmark AprilTags were placed on the ground, to make use of the same camera tilt used for search and not switch between tilts. Only camera tilts were used, no pans</li>
           <li>When in motion, a validation is added to check if the base bumper hits anything to stop the motion (no rogue tobots!)</li>
