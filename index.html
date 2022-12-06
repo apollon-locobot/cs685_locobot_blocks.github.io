@@ -188,17 +188,51 @@
 
       <div id="bearing-range">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">BEARING & RANGE</span></h5>
-        <p class="content">
-          By placing AprilTags on objects or on the ground, they can be used to calculate the bearing and range from the robot's center to the center of the AprilTag. These values are always relative to the robot's pose at the time of the detection. We used this in two ways: to estimate the block's coordinates to drive close to it, and to detect relative landmark positions to aide in localization.
-        </p>
-        <p>
-          We use 2D odometry, however the tag's <code>position.z</code> value is the 3D distance to the tag's center. Therefore we need to use the <code>position.y</code> value to project to a line parallel to the camera. Since the camera can be in any tilt position, we need to account for tha
-        </p>
+        <div class="content">
+          <p>
+            By placing AprilTags on objects or on the ground, they can be used to calculate the bearing and range from the robot's center to the center of the AprilTag. These values are always relative to the robot's pose at the time of the detection. We used this in two ways: to estimate the block's coordinates to drive close to it, and to detect relative landmark positions to aide in localization.
+            <center>
+              <img src="/assets/images/range_bearing_explained.jpg" style="width:20%;" class="w3-margin-top">
+              <div class="img-desc">Robot Bearing and Range</div>
+            </center>
+          </p>
+          <p>
+            <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Flocobot_landmark_slam%2Fblob%2F1dfb8b1eac3f6167bf568dc06ead8df5ea161b2d%2Fsrc%2Flandmark_localizer%2Flocalizer.py%23L34-L36&style=default&type=code&showBorder=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
+          </p>
+          <p>
+            We use 2D odometry, however the tag's <code>position.z</code> value is the 3D distance to the tag's center. Therefore we need to use the <code>position.y</code> value to project to a line parallel to the camera. We then account for the camera tilt by rotating opposite the tilt angle. This gives us the line parallel to the ground from the camera to the tag plane.
+            <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Flocobot_landmark_slam%2Fblob%2F1dfb8b1eac3f6167bf568dc06ead8df5ea161b2d%2Fsrc%2Flandmark_localizer%2Flocalizer.py%23L47-L48&style=default&type=code&showBorder=on&showFullPath=on&showCopy=on"></script>
+          </p>
+          <p>
+            To keep the measurement inline with the odometry, we further take into account that the left camera performing the tag detections is not at the center of the robot. A combination of measurements and trial-and-error led us to the values below, though you could consider adjusting, particularly the <code>camera_radius_offset</code>. To handle the left camera's offset from the robot's true heading center, we can simply subtract the offset from the tag's x value (since it's in real meters).
+            <center>
+              <img src="/assets/images/camera_offsets.jpg" style="width:20%;" class="w3-margin-top">
+              <div class="img-desc">Measured camera offsets</div>
+            </center>
 
-        <!-- TODO: Aaron -->
-        <ul>
-          <li>Talk about shift in camera x and y, with respect to the robot center</li>
-        </ul>
+            <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Flocobot_landmark_slam%2Fblob%2F1a23eee24bcd3e2414010a6f7f75ac2ac571aa77%2Fsrc%2Flandmark_localizer%2Flocalizer.py%23L42-L46&style=default&type=code&showBorder=on&showFullPath=on&showCopy=on"></script>
+          </p>
+          <p>
+            Now we need to consider that not only does the <code>camera_radius_offset</code> impact the true range, but also the bearing. Here is the full trigonometry problem we can solve. Since we already accounted for the camera's x offset, we can assume the camera is centered int he diagram.
+            <!-- TODO: Add fill diagram -->
+            <center>
+              <img src="/assets/images/bearing_range_triangle.jpg" style="width:30%;" class="w3-margin-top">
+              <div class="img-desc">Bearing/Range Triangles</div>
+            </center>
+          </p>
+          <p>
+            We use the tag's <code>shifted_x</code> value to project the <code>ground_projection</code> to the camera center. Imagine a line parallel to the ground that goes from the camera to the plane of the tag.
+
+            <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Flocobot_landmark_slam%2Fblob%2F1a23eee24bcd3e2414010a6f7f75ac2ac571aa77%2Fsrc%2Flandmark_localizer%2Flocalizer.py%23L52&style=default&type=code&showBorder=on&showFullPath=on&showCopy=on"></script>
+          </p>
+          <p>
+            Now we can add the <code>camera_radius_offset</code> to get the base of the full range/bearing triangle. We can now solve for these values.
+            <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Flocobot_landmark_slam%2Fblob%2F1a23eee24bcd3e2414010a6f7f75ac2ac571aa77%2Fsrc%2Flandmark_localizer%2Flocalizer.py%23L55-L59&style=default&type=code&showBorder=on&showFullPath=on&showCopy=on"></script>
+          </p>
+          <!-- TODO: Check code for negating bearing. I think x to the right is POSITIVE -->
+
+          <!-- TODO: Aaron -->
+        </div>
       </div>
 
       <div id="kinematics">
