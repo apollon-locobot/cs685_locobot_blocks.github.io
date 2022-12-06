@@ -364,7 +364,7 @@
           <p>
             The LoCoBot is built upon the iRobot Create 3 base (a Roomba), a differential drive robot.The linear and angular velocities can be commanded directly by issuing a Twist message to the topic <code>/locobot/cmd_vel</code>. The Interbotix API offers a function <code>command_velocity(x=0, yaw=0)</code> that handles the publishing. This is designed to be called repeatedly by a controller. A Proportional Integral Derivative (PID) controller is a proven method for setting control values to reach a target set point accurately with minimal oscillation. We found <a href="https://pidexplained.com/pid-controller-explained/" target="_blank">PID Explained</a> to be a helpful resource.
             <p>
-            As part of this project, we implemented our own PID controller. Specifically two Python classes:
+              As part of this project, we implemented our own PID controller. Specifically two Python classes:
             </p>
           </p>
         
@@ -375,7 +375,32 @@
           </p>
           <b><a href="https://github.com/awpollon/cs685_locobot_blocks/blob/main/locobot_controller.py" target="_blank">LocobotController</a></b>
           <p>
-            A higher level controller where a specific goal pose is specified, and with each call to <code>step(current_pose)</code> control linear and angular velocities are returned. 
+            A higher level controller where a specific goal pose is specified, and with each call to <code>step(current_pose)</code> control linear and angular velocities are returned. It encapsulates tuned gained values and breaks the control into two phase: "Move to Goal Point" and "Rotate to Goal Pose Angle". We do not have any obstacles in the way of the robot, and therefor it can always take a straight line Euclidean path to the it's goal point. If only the goal point is of concern such as with a waypoint, then a value of <code>None</code> can be passed as the pose angle to skip the rotation phase. For example, <code>(1, 2, None)</code>.
+          </p>
+          <p>
+            The euclidean distance to the (x, y) goal point from the current pose is determined. If it is within a certain <code>TRAVEL_ACCEPTANCE_RADIUS</code>, then the point is considered reached.
+            <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2Fe751d425d4ae496ef815fc2a088058d090ec10a8%2Flocobot_controller.py%23L103-L108&style=default&type=code&showBorder=on&showFullPath=on&showCopy=on"></script>
+          </p>
+          <p>
+            If it hasn't been reached, then calculated the relative angle from the current pose to the goal point.
+            <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2Fe751d425d4ae496ef815fc2a088058d090ec10a8%2Flocobot_controller.py%23L91&style=default&type=code&showBorder=on&showLineNumbers=on&showFullPath=on&showCopy=on"></script>
+          </p>
+          <p>
+            Since we can set the linear and angular velocities directly, we can use separate PID Controller instances to minimize each of the distance to the goal point the relative again. If tuned right these two controllers should balance eah other to make progress towards the goal, adjusting automatically to changes in error. We add the constraint that the LoCoBot should only move forward, and therefore the error to the linear velocity controller is always positive.<a href="https://w3.cs.jmu.edu/molloykp/teaching/cs354/cs354_2021Fall/resources/pid.pdf" target="_blank">Controlling Physical Systems</a> by Nathan Sprague explains the idea of separate controllers for differential drive velocity control, as well as a good overview of PID Controllers in general.
+            <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2Fe751d425d4ae496ef815fc2a088058d090ec10a8%2Flocobot_controller.py%23L98-L99&style=default&type=code&showBorder=on&showLineNumbers=on&showFullPath=on&showCopy=on"></script>
+          </p>
+          <p>
+            Once it has reached the goal point, it now needs to rotate to the correct pose angle. At this stage we always return zero for the linear velocity. For the angular velocity we have a separately tuned PID Controller for this phase, and pass it the error in the current pose angle and the desired angle (taking into account either direction of rotation).
+            <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2Fe751d425d4ae496ef815fc2a088058d090ec10a8%2Flocobot_controller.py%23L87-L88&style=default&type=code&showBorder=on&showLineNumbers=on&showFullPath=on&showCopy=on"></script>
+          </p>
+          <p>
+            Once the theta error is within the <code>GOAL_THETA_MARGIN</code>, we have reached the goal pose and the velocities are zeroed out. We realized it was necessary to make sure once the controller had entered the "angle" phase it no longer checked against the <code>TRAVEL_ACCEPTANCE_RADIUS</code>, as it could become unstable going back and forth between stages. We do find in practice that sometimes by rotating to the pose angle the distance to the goal point increases due to error. We found this was small enough to not be a large issue, but more work could be done to address.
+          </p>
+
+          <b>Tuning</b>
+          <p>
+            Tuning the gain values was challenging. We settled on values that gave us fairly consistent results, although maybe moves a little slower than it could. Use them as starting points. <a href="https://pidexplained.com/how-to-tune-a-pid-controller/" target="_blank">How to Tune a PID Controller</a> was helpful in providing some intuition. We found it was better to be conservative with the integral terms, although we believe a small value is necessary to help overcome too slow of acceleration. One important consideration to balance the maximum angular and linear velocity values. The ratio needs to be such that if the robot is facing away from it's goal (both theta and distance errors are high), setting both values to the max will cause the robot to turn around. We do recommend setting max velocities to keep the robot under control and safe.
+            <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2F0a4b119ce91f96e4833c64a443d827eb9c4df98b%2Fblockbot.py%23L26-L27&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
           </p>
         </div>
       </div>
