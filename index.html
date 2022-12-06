@@ -48,14 +48,14 @@
     <div class="w3-sand w3-large">
       <div id="introduction">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">INTRODUCTION</span></h5>
-        <p class="content">This project was done as a part of the CS685 Autonomous Robotics course at George Mason University. We were interested in experimenting with a real robot and chose to work on the <a href="https://www.trossenrobotics.com/locobot-px100.aspx" target="_blank">LoCoBot PX100</a>, since the Interbotix APIs make it easier to work with. We chose a "toy problem" (🙂) that incorporates the concepts of Inverse Kinematics, Control, Probabilistic Robotics, Tracking and Localization, SLAM taught in the <a href="https://cs.gmu.edu/media/syllabi/Fall2022/CS_685SteinG001.pdf" target="_blank">course</a>, to let a robot navigate through and interact with the environment to perform basic tasks. The project was developed using <a href="http://wiki.ros.org/noetic" target="_blank">ROS Noetic</a>, which the LoCoBot supports seamlessly.</p>
+        <p class="content">This project was done as a part of the CS685 Autonomous Robotics course at George Mason University, and supported by the <a href="https://cs.gmu.edu/~robotics/pmwiki.php/Main/HomePage" target="_blank">GMU Autonomous Robotics Laboratory</a>. We were interested in experimenting with a real robot and chose to work on the <a href="https://www.trossenrobotics.com/locobot-px100.aspx" target="_blank">LoCoBot PX100</a>, since the Interbotix APIs make it easier to work with. We chose a "toy problem" (🙂) that incorporates the concepts of Inverse Kinematics, Control, Probabilistic Robotics, Tracking and Localization, SLAM taught in the <a href="https://cs.gmu.edu/media/syllabi/Fall2022/CS_685SteinG001.pdf" target="_blank">course</a>, to let a robot navigate through and interact with the environment to perform basic tasks. The project was developed using <a href="http://wiki.ros.org/noetic" target="_blank">ROS Noetic</a>, which the LoCoBot supports seamlessly.</p>
 
         <p class="content next">
           This tutorial is an informal introduction to using the LoCoBot and a walkthrough of each of the components that make up our project. We'll also discuss some practical tips and the challenges we faced. The LoCoBots offer a variety of sensors and capabilities that are very accessible to beginners, students, and researchers. We only scratched the surface of what is possible. We hope that sharing our experience through this tutorial will assist future students in leveraging the GMU Autonomous Robotics Lab's fleet of LoCoBots. We look forward to the cool projects to come!
         </p>
 
         <p class="content">
-          <span class="material-symbols-outlined" style="color: #FF7900;vertical-align: text-bottom;">warning</span> Warning: You will have a ton of fun working with a real robot. It will also take a lot more time than you think and be full of unexpected challenges. Be prepared for some long days and late nights! We highly recommend breaking your project down into distinct subgoals and make incremental progress. The sections in this tutorial are the subgoals we achieved in an order to complete this project. Be ambitious, but have a plan and get started right away.
+          <span class="material-symbols-outlined" style="color: #FF7900;vertical-align: text-bottom;">warning</span> Warning: You will have a ton of fun working with a real robot. It will also take a lot more time than you think and be full of unexpected challenges. Be prepared for some long days and late nights! We highly recommend breaking your project down into distinct subgoals and make incremental progress. Be ambitious, but have a plan and get started right away.
         </p>
       </div>
 
@@ -120,15 +120,21 @@
             - <a href="https://april.eecs.umich.edu/software/apriltag" target="_blank">AprilTag</a>
           </p>
         </div>
-        <p class="content">
-          In this project, AprilTags were used to identify the block and the landmarks. The <code>/tag_detections</code> topic provides the list of AprilTag detections. The relevant AprilTags are extracted from this and stored in the class variables (check <code>get_tag_data()</code>).
-        </p>
-        <p class="content">
+        <div class="content">
+          <p>
+            In this project, AprilTags were used to identify the block and the landmarks. This is a useful project simplification to avoid computer vision tasks such as camera depth perception and object detection (which could be a project all on its own), as well as the error those could introduce.
+          </p>
+          <p>
+            The <code>/tag_detections</code> topic provides the list of AprilTag detections. The relevant AprilTags are extracted from this and stored in the class variables (check <code>get_tag_data()</code>).
+          </p>
           <b>Understanding AprilTag values:</b> <br>
-          <span style="margin-left: 32px;">
+          <p>
+            The Interbotix provides an <a href="https://github.com/Interbotix/interbotix_ros_toolboxes/blob/main/interbotix_perception_toolbox/interbotix_perception_modules/src/interbotix_perception_modules/apriltag.py">AprilTag Module</a> to combine the camera information with the AprilTag pixel data to provide real meter values for the tag detection data.
+          </p>
+          <p>
             The raw AprilTag <code>detections</code> provided by <code>/tag_detections</code> topic include the pose and orientation of the AprilTag with respect to the camera (see Fig. 3). To understand the values, let's consider the AprilTag with ID 5 (the tag on the robot arm in Fig. 2). The <code>detections[0].pose.pose.pose</code> has the required information, where <code>position</code> is the estimated position of the AprilTag and the <code>orientation</code> is the tilt of the tag in all dimensions with respect to the camera's field.
-          </span>
-        </p>
+          </p>
+        </div>
         <div class="row">
           <div class="column">
             <center>
@@ -183,6 +189,13 @@
 
       <div id="bearing-range">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">BEARING & RANGE</span></h5>
+        <p class="content">
+          By placing AprilTags on objects or on the ground, they can be used to calculate the bearing and range from the robot's center to the center of the AprilTag. These values are always relative to the robot's pose at the time of the detection. We used this in two ways: to estimate the block's coordinates to drive close to it, and to detect relative landmark positions to aide in localization.
+        </p>
+        <p>
+          We use 2D odometry, however the tag's <code>position.z</code> value is the 3D distance to the tag's center. Therefore we need to use the <code>position.y</code> value to project to a line parallel to the camera. Since the camera can be in any tilt position, we need to account for tha
+        </p>
+
         <!-- TODO: Aaron -->
         <ul>
           <li>Talk about shift in camera x and y, with respect to the robot center</li>
