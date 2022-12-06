@@ -355,11 +355,29 @@
           <p>
             We found the the localization was effective and there was a noticeable improvement in consistently making it to the block when landmarks were used. It was most noticeable when it came ot the pose angle, as without landmarks it's angle towards the box had more error. At first we faced challenges getting Landmark SLAM working due to odometry noise model being too large relative to the landmark noise. Furthermore as we improved and corrected our bearing and range calculations, the performance improved. Logging the odometry values along with estimated pose and comparing was useful to help tune and assess. It was also useful to log GTSAM's estimated landmark positions at each time step to confirm the positions were remaining consistent.
           </p>
-
+        </div>
+      </div>
 
       <div id="pid">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">PID CONTROL</span></h5>
-        <!-- TODO: Aaron -->
+        <div class="content">
+          <p>
+            The LoCoBot is built upon the iRobot Create 3 base (a Roomba), a differential drive robot.The linear and angular velocities can be commanded directly by issuing a Twist message to the topic <code>/locobot/cmd_vel</code>. The Interbotix API offers a function <code>command_velocity(x=0, yaw=0)</code> that handles the publishing. This is designed to be called repeatedly by a controller. A Proportional Integral Derivative (PID) controller is a proven method for setting control values to reach a target set point accurately with minimal oscillation. We found <a href="https://pidexplained.com/pid-controller-explained/" target="_blank">PID Explained</a> to be a helpful resource.
+            <p>
+            As part of this project, we implemented our own PID controller. Specifically two Python classes:
+            </p>
+          </p>
+        
+          <b><a href="https://github.com/awpollon/cs685_locobot_blocks/blob/main/pid_controller.py" target="_blank">PIDController</a></b>
+          <p>
+            A generic PID Controller implementation. Designed to be passed in the error each call of <code>stpe()</code>, which then returns the control value. A new PID Controller instance should be created each time a new goal set point is needed. KP, KI, and KD gain values can be specified upon instantiation.
+            <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2F977e8ff2cbe6b5e445cd00590cf8ced1bcd3f0a8%2Fpid_controller.py&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
+          </p>
+          <b><a href="https://github.com/awpollon/cs685_locobot_blocks/blob/main/locobot_controller.py" target="_blank">LocobotController</a></b>
+          <p>
+            A higher level controller where a specific goal pose is specified, and with each call to <code>step(current_pose)</code> control linear and angular velocities are returned. 
+          </p>
+        </div>
       </div>
 
       <div id="rosbag">
