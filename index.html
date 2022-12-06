@@ -201,7 +201,7 @@
         </p>
 
         <p class="content">
-          Since the LoCoBot PX100 has only 4 degrees of freedom, the arm doesn't have a wide field of reach for the end effector. So we chose to align the robot with the block so it always end up in a position that makes it easier to grab the block. For the alignment part in <code>align_with_block()</code>, the block is expected to be near the robot. The robot looks in the nearby field (hence the camera tilt at the beginning), and then slowly rotates or moves forward using PID controllers until the block is in <code>[-ALIGN_BEARING_ACCEPTANCE, ALIGN_BEARING_ACCEPTANCE]</code> and <code>[-ALIGN_RADIUS_ACCEPTANCE, ALIGN_RADIUS_ACCEPTANCE]</code> ranges. As PID controllers are used, the motion is inversely proportional to the distance/angle from the block, whcih ensures accurate alignment with the block.
+          Since the LoCoBot PX100 has only 4 degrees of freedom, the arm doesn't have a wide field of reach for the end effector. So we chose to align the robot with the block so it always end up in a position that makes it easier to grab the block. For the alignment part in <code>align_with_block()</code>, the block is expected to be near the robot. The robot looks in the nearby field (hence the camera tilt at the beginning), and then slowly rotates or moves forward using PID controllers until the block is in <code>[-ALIGN_BEARING_ACCEPTANCE, ALIGN_BEARING_ACCEPTANCE]</code> and <code>[-ALIGN_RADIUS_ACCEPTANCE, ALIGN_RADIUS_ACCEPTANCE]</code> ranges. As PID controllers are used, the motion is inversely proportional to the distance/angle from the block, which ensures accurate alignment with the block.
 
           <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2F5f9e61d8196ca24718a6d3e725c17d75670eaf8c%2Fblockbot.py%23L248-L294&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
 
@@ -264,7 +264,7 @@
           Here are some subgoals we wanted to achieve, but couldn't because of the limited time:
         <ul>
           <li><b>Multi-block search</b> - Perform the same plan, go back and search for another block</li>
-          <li><b>Bin search</b> - Just like the block, search for the bin in the environment</li>
+          <li><b>Bin search</b> - Just like the block, search for the bin in the environment. The <code>find_goal()</code> is already configured to search for an AprilTag on the bin</li>
           <li><b>Block sorting</b> - Have multiple bins and blocks, place a block in a specific bin</li>
         </ul>
         </p>
