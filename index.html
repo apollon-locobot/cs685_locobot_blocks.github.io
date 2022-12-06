@@ -18,7 +18,7 @@
 <body>
   <header class="bgimg w3-display-container" id="home">
     <div class="w3-display-right stroke">
-      <span class="w3-text-white" style="font-size:35px">Real Robotics Planning <br>and Control with LoCoBot</span>
+      <span class="w3-text-white" style="font-size:35px">BlockBot: Robotics Planning <br>and Control with LoCoBot</span>
     </div>
   </header>
 
@@ -48,7 +48,7 @@
     <div class="w3-sand w3-large">
       <div id="introduction">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">INTRODUCTION</span></h5>
-        <p class="content">This project was done as a part of the CS685 Autonomous Robotics course at George Mason University, and supported by the <a href="https://cs.gmu.edu/~robotics/pmwiki.php/Main/HomePage" target="_blank">GMU Autonomous Robotics Laboratory</a>. We were interested in experimenting with a real robot and chose to work on the <a href="https://www.trossenrobotics.com/locobot-px100.aspx" target="_blank">LoCoBot PX100</a>, since the Interbotix APIs make it easier to work with. We chose a "toy problem" (🙂) that incorporates the concepts of Inverse Kinematics, Control, Probabilistic Robotics, Tracking and Localization, SLAM that were taught in the <a href="https://cs.gmu.edu/media/syllabi/Fall2022/CS_685SteinG001.pdf" target="_blank">course</a>, to let a robot navigate through and interact with the environment to perform basic tasks. The project was developed using <a href="http://wiki.ros.org/noetic" target="_blank">ROS Noetic</a>, which the LoCoBot supports seamlessly.</p>
+        <p class="content">This project was done as a part of the CS685 Autonomous Robotics course at George Mason University, and supported by the <a href="https://cs.gmu.edu/~robotics/pmwiki.php/Main/HomePage" target="_blank">GMU Autonomous Robotics Laboratory</a>. We were interested in experimenting with a real robot and chose to work with the <a href="https://www.trossenrobotics.com/locobot-px100.aspx" target="_blank">LoCoBot PX100</a>. We sought to demonstrate a task completing robot supported by ROS and its supporting APIs. We chose a "toy" problem of a block collecting robot that incorporates the concepts of Inverse Kinematics, Control, Probabilistic Robotics, Tracking and Localization, SLAM that were taught in the <a href="https://cs.gmu.edu/media/syllabi/Fall2022/CS_685SteinG001.pdf" target="_blank">course</a>, to let a robot navigate through and interact with the environment to perform basic tasks. The project was developed using <a href="http://wiki.ros.org/noetic" target="_blank">ROS Noetic</a>, which the LoCoBot supports seamlessly.</p>
 
         <p class="content next">
           This tutorial is an informal introduction to using the LoCoBot and a walkthrough of each of the components that make up our project. We'll also discuss some practical tips and the challenges we faced. The LoCoBots offer a variety of sensors and capabilities that are very accessible to beginners, students, and researchers. We only scratched the surface of what is possible. We hope that sharing our experience through this tutorial will assist future students in leveraging the GMU Autonomous Robotics Lab's fleet of LoCoBots. We look forward to the cool projects to come!
@@ -66,11 +66,11 @@
         <div class="row">
           <div class="column">
             <p class="content">
-              LoCoBot PX100, a.k.a "Low-Cost Robot", from Trossen Robotics starts from about $3000 and has the following features:
+              LoCoBot PX100, a.k.a "Low-Cost Robot", from Trossen Robotics (Interbotix) starts from about $3000 and has the following features:
             <ul>
               <li>Create 3 from iRobot (base)</li>
               <li>Intel NUC NUC8i3BEH Mini PC</li>
-              <li>Intel® RealSense™ Depth Camera D435</li>
+              <li>Intel RealSense Depth Camera D435</li>
               <li>PincherX 100 Robot Arm (4 degrees of freedom)</li>
               <li>RPLIDAR A2M8 360° Laser Range Scanner</li>
               <li>MoveIt Support</li>
@@ -85,8 +85,18 @@
 
       <div id="quick-guide">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">QUICK GUIDE</span></h5>
-        <p class="content">
+        <div class="content">
+        <p>
+          The LoCoBots we used were setup by the GMU Robotics Lab. Some of the information here on getting started is installation dependent and may change overtime.
+        </p>
+        <p>
+          To start the LoCoBot, you will need to power on both the base (toggle switch on the side) and the onboard Mini PC located under the frame (push button, lights up blue). The rechargeable on board power supply provides plenty of charge for a few hours of use. Once the PC is powered on, the accompanying laptop computer can be used to SSH wirelessly to the onboard PC. Must be connected to the MASON network in the lab (not MASON SECURE). Each LoCoBot is numbered, so the for example, ssh locobot04.
+        </p>
+        <p>
+           
+        </p>
           <!-- TODO: Sai, Aaron -->
+
           <i>Add a quick guide on how to use LoCoBot and anything to work on this project. Pointers:</i>
         <ul>
           <li>turning the locobot on/off</li>
@@ -95,20 +105,23 @@
           <li>arm, camera, base, joints, etc of the bot</li>
           <li>python scipt</li>
           <li>Nav Stack - https://www.trossenrobotics.com/docs/interbotix_xslocobots/ros_packages/navigation_stack_configuration.html (LoCoBot needs to be connected to a monitor for this)</li>
+          <li>Setting <a href="https://code.visualstudio.com/docs/remote/ssh" target="_blank">Remote Development using SSH</a> in VS Code could save lots of time</li>
         </ul>
-        </p>
+      </div>
       </div>
 
       <div id="objective">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">PROJECT OBJECTIVE - TOY COLLECTION</span></h5>
         <p class="content">
-          The complete goal of the problem is for the robot to search for a block using its AprilTag, travel to almost near the block using landmark SLAM, pickup the block using Inverse Kinematics, travel back to the origin, and drop the block into the bin.
+          The complete goal of the problem is for the robot to search for a block using its AprilTag, travel to almost near the block using Landmark SLAM, pickup the block using Inverse Kinematics, travel back to the origin, and drop the block into the bin.
         </p>
         <center>
           <img src="/assets/images/Project_Flow_Chart.png" style="width:90%;" class="w3-margin-top">
           <div class="img-desc">Fig. 1. The objective of the project</div>
         </center>
       </div>
+
+      <!-- TODO: Add a brief project structure section so we can mention relevent files, how to run them, and link to repo (or put repo links at top) -->
 
       <div id="apriltag">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">APRILTAG</span></h5>
@@ -230,12 +243,10 @@
             <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Flocobot_landmark_slam%2Fblob%2F1a23eee24bcd3e2414010a6f7f75ac2ac571aa77%2Fsrc%2Flandmark_localizer%2Flocalizer.py%23L52&style=default&type=code&showBorder=on&showFullPath=on&showCopy=on"></script>
           </p>
           <p>
-            Now we can add the <code>camera_radius_offset</code> to get the base of the full range/bearing triangle. We can now solve for these values.
+            Now we can add the <code>camera_radius_offset</code> to get the base of the larger triangle. We can now solve for the bearing and range values.
             <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Flocobot_landmark_slam%2Fblob%2F1a23eee24bcd3e2414010a6f7f75ac2ac571aa77%2Fsrc%2Flandmark_localizer%2Flocalizer.py%23L55-L59&style=default&type=code&showBorder=on&showFullPath=on&showCopy=on"></script>
           </p>
           <!-- TODO: Check code for negating bearing. I think x to the right is POSITIVE -->
-
-          <!-- TODO: Aaron -->
         </div>
       </div>
 
@@ -278,7 +289,7 @@
 
           <b>GTSAM</b>
           <p>
-            To fuse together the landmark observation, the robot's odometry readings, and the potential error in both of these, we turn to probabilistic and leverage factor graphs and Bayes Networks. A formal discussion of these are outside the scope of this tutorial (see <a href="http://robots.stanford.edu/probabilistic-robotics/" target="_blank"><i>Probabilistic Robotics</i></a>). The idea is at every time step, the robot doesn't know it's exact pose, but it can use "evidence" of what it perceives to reason about it's current pose and assign a certainty value (covariance) to it. In our case the "evidence" is the current odometry and the landmark detections. A factor graph can be constructed connecting each pose to the evidence it has about its estimated value, which can then be optimized.
+            To fuse together the landmark observations, the robot's odometry readings, and the potential error in both of these, we turn to probabilistic and leverage factor graphs and Bayes Networks. A formal discussion of these are outside the scope of this tutorial (see <a href="http://robots.stanford.edu/probabilistic-robotics/" target="_blank"><i>Probabilistic Robotics</i></a>). The idea is at every time step, the robot doesn't know it's exact pose, but it can use "evidence" of what it perceives to reason about it's current pose and assign a certainty value (covariance) to it. In our case the "evidence" is the current odometry and the landmark detections. A factor graph can be constructed connecting each pose to the evidence it has about its estimated value, which can then be optimized.
           </p>
           <p>
             To handle building and solving the factor graph, we use the <a href="https://github.com/borglab/gtsam" target="_blank">Georgia Tech Smoothing and Mapping (GTSAM)</a> Library. We've implemented a Python class to encapsulate the code for building and optimizing using the library for our project setup.
@@ -454,7 +465,7 @@
       <div id="tips">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">SIMPLIFICATIONS & TIPS</span></h5>
         <p class="content">
-          Here are some things that made our life easy (😉):
+          Here are some things that made our life easier (😉):
         <ul>
           <li>To avoid using Deep Learning models (like YOLO) to find the block using vision, we've added an AprilTag to the block</li>
           <li>Since there are two camera tilts to search for the block from far away and align when near the block, two AprilTags were added for accurate detections in both tilts</li>
@@ -464,9 +475,8 @@
           <li>Since the AprilTag on the block is small, the robot might not track it all the times. So the search has a threshold that ensures travel doesn't start until the block is within <code>BLOCK_DETECTION_RANGE</code> meters</li>
           <li>The path to the block and the bin is free from obstacles</li>
           <li>The landmark AprilTags were placed on the ground, to make use of the same camera tilt used for search and not switch between tilts. Only camera tilts were used, no pans</li>
-          <li>When in motion, a validation is added to check if the base bumper hits anything to stop the motion (no rogue tobots!)</li>
+          <li>When in motion, a validation is added to check if the base bumper hits anything to stop the motion (no rogue robots!)</li>
           <li>The topic <code>/scan</code> can be used to get the LIDAR readings</li>
-          <li>Setting <a href="https://code.visualstudio.com/docs/remote/ssh" target="_blank">Remote Development using SSH</a> in VS Code could save lots of time</li>
         </ul>
         </p>
       </div>
