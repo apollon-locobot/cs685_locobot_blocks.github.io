@@ -129,7 +129,7 @@
           <p>
             The <code>/tag_detections</code> topic provides the list of AprilTag detections. The relevant AprilTag information was extracted from this and stored in the class variables (check <code>get_tag_data()</code>).
           </p>
-          <b>Understanding AprilTag values:</b> <br>
+          <b>Understanding AprilTag Values</b> <br>
           <p>
             The Interbotix provides an <a href="https://github.com/Interbotix/interbotix_ros_toolboxes/blob/main/interbotix_perception_toolbox/interbotix_perception_modules/src/interbotix_perception_modules/apriltag.py">AprilTag Module</a> to combine the camera information with the AprilTag pixel data to provide real meter values for the tag detection data.
           </p>
@@ -204,7 +204,7 @@
             <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Flocobot_landmark_slam%2Fblob%2F1dfb8b1eac3f6167bf568dc06ead8df5ea161b2d%2Fsrc%2Flandmark_localizer%2Flocalizer.py%23L34-L36&style=default&type=code&showBorder=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
           </p>
           <p>
-            We use 2D odometry, however the tag's <code>position.z</code> value is the 3D distance to the tag's center. Therefore we need to use the <code>position.y</code> value to project to a line parallel to the camera. We then account for the camera tilt by rotating opposite the tilt angle. This gives us the line parallel to the ground from the camera to the tag plane.
+            We use 2D odometry, however the tag's <code>position.z</code> value is the 3D distance to the tag's center. Therefore we need to use the <code>position.y</code> value to project to a line parallel to the camera. We then account for the camera tilt by rotating opposite the tilt angle. This gives us the line parallel to the ground from the camera to the tag plane. In this project we do not permit the camera to pan.
             <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Flocobot_landmark_slam%2Fblob%2F1dfb8b1eac3f6167bf568dc06ead8df5ea161b2d%2Fsrc%2Flandmark_localizer%2Flocalizer.py%23L47-L48&style=default&type=code&showBorder=on&showFullPath=on&showCopy=on"></script>
           </p>
           <p>
@@ -261,6 +261,64 @@
 
       <div id="landmark-slam">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">LANDMARK SLAM</span></h5>
+        <div class="content"</div>
+          <b>Overview</b>
+          <p>
+            In order to accurately travel to goal pose's, including returning back to the "home" position where the bin is located, the robot needs top track where it is. The Create3 publishes the current odometry on the topic <code>/locobot/odom</code>. Conveniently Interbotix provides a <code>get_odom()</code> function that produces a simple 2D pose, rather than the quaternion.
+          </p>
+          <p>
+            Odometry by itself for localizing the LoCoBot isn't too bad, especially just driving in a straight line. However as it starts to make turns and move further, it starts to become inaccurate. We sought to demonstrate an effective use of Landmark SLAM to improve the LoCoBot's estimate of it's current pose.
+          </p>
+          <p>
+            Imagine you are lost driving in a city. You know where you started and roughly how far you've driven and maybe the direction you went, but not well enough to say exactly where you are (and no GPS signal!). You make a turn and suddenly see a pizza place you've driven past before, and then a gas station you previously stopped at. Now you know exactly where you are located. 
+          </p>
+          <p>
+            We placed four large AprilTags on the ground to serve as stationary landmarks. At every time step the robot can register what landmark tags are visible, and their bearing and range relative to the robot. For simplicity the robot always knows which landmark it is detecting via the AprilTag ID. A future project could ignore the tag ID values and experiment with performing data association of unknown landmarks.
+          </p>
+
+          <b>GTSAM</b>
+          <p>
+            To fuse together the landmark observation, the robot's odometry readings, and the potential error in both of these, we turn to probabilistic and leverage factor graphs and Bayes Networks. A formal discussion of these are outside the scope of this tutorial (see <a href="http://robots.stanford.edu/probabilistic-robotics/" target="_blank"><i>Probabilistic Robotics</i></a>). The idea is at every time step, the robot doesn't know it's exact pose, but it can use "evidence" of what it perceives to reason about it's current pose and assign a certainty value (covariance) to it. In our case the "evidence" is the current odometry and the landmark detections. A factor graph can be constructed connecting each pose to the evidence it has about its estimated value, which can then be optimized.
+          </p>
+          <p>
+            To handle building and solving the factor graph, we use the <a href="https://github.com/borglab/gtsam" target="_blank">Georgia Tech Smoothing and Mapping (GTSAM)</a> Library. We've implemented a Python class to encapsulate the code for building and optimizing using the library for our project setup.
+          </p>
+          <p>
+            First the GTSAM factor graph and any state variables ae initialized. The starting pose (always (0,0,0) for us) is added to the graph as a <code>PriorFactorPose2</code> We also define a noise model. The noise variables correspond to the factors that are added to the graph. Note that <code>ODOMETRY_NOISE</code> is the noise in the change in pose from the previous odometry reading, i.e. how much it has moved since the last time registered observation. We set the time steps 1/10 a second. The <code>LANDMARK_NOISE</code> corresponds to the range and bearing calculations for the landmarks.
+            <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Flocobot_landmark_slam%2Fblob%2F1a23eee24bcd3e2414010a6f7f75ac2ac571aa77%2Fsrc%2Flandmark_localizer%2Flocalizer.py%23L9-L15&style=default&type=code&showBorder=on&showLineNumbers=on&showFullPath=on&showCopy=on"></script>
+            <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Flocobot_landmark_slam%2Fblob%2F1a23eee24bcd3e2414010a6f7f75ac2ac571aa77%2Fsrc%2Flandmark_localizer%2Flocalizer.py%23L65-L87&style=default&type=code&showBorder=on&showFullPath=on&showCopy=on"></script>
+          </p>
+          <p>
+            Each time step a new observation is added, which includes the current odometry pose, the AprilTag data for any detected landmarks, and the tilt of the camera at the time of the observation. History is updated. We track the time index each call to create a distinct pose. We do not attempt to detect a loop closure.
+            <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Flocobot_landmark_slam%2Fblob%2F1a23eee24bcd3e2414010a6f7f75ac2ac571aa77%2Fsrc%2Flandmark_localizer%2Flocalizer.py%23L89-L99&style=default&type=code&showBorder=on&showLineNumbers=on&showFullPath=on&showCopy=on"></script>
+          </p>
+          <p>
+            To add the new odometry to the graph, we use a <code>BetweenFactorPose2</code>. This expects the change relative to the previous pose, therefore we first take the difference. Since the poses are in the global coordinate system, to get the changes relative the previous we need to rotate based on the previous pose's yaw value.
+            <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Flocobot_landmark_slam%2Fblob%2F1a23eee24bcd3e2414010a6f7f75ac2ac571aa77%2Fsrc%2Flandmark_localizer%2Flocalizer.py%23L101-L107&style=default&type=code&showBorder=on&showLineNumbers=on&showFullPath=on&showCopy=on"></script>
+          </p>
+          <p>
+            The <code>BetweenFactorPose2</code> is created and added to the graph. An initial estimate must also be added for the current pose, so we use the current odometry.
+            <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Flocobot_landmark_slam%2Fblob%2F1a23eee24bcd3e2414010a6f7f75ac2ac571aa77%2Fsrc%2Flandmark_localizer%2Flocalizer.py%23L109-L117&style=default&type=code&showBorder=on&showLineNumbers=on&showFullPath=on&showCopy=on"></script>
+          </p>
+          <p>
+            For each landmark AprilTag detection, we create a <code>BearingRangeFactor2D</code> connecting the current pose to the landmark. We use the tag ID value as the landmark ID.
+            <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Flocobot_landmark_slam%2Fblob%2F1a23eee24bcd3e2414010a6f7f75ac2ac571aa77%2Fsrc%2Flandmark_localizer%2Flocalizer.py%23L122-L132&style=default&type=code&showBorder=on&showLineNumbers=on&showFullPath=on&showCopy=on"></script>
+          </p>
+          <p>
+            Finally if we haven't seen a landmark before, an initial estimate must be set. A global (x, y) coordinate can be calculated by taking the odometry pose and the landmark bearing and range.
+            <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Flocobot_landmark_slam%2Fblob%2F1a23eee24bcd3e2414010a6f7f75ac2ac571aa77%2Fsrc%2Flandmark_localizer%2Flocalizer.py%23L138-L146&style=default&type=code&showBorder=on&showLineNumbers=on&showFullPath=on&showCopy=on"></script>
+            <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Flocobot_landmark_slam%2Fblob%2F1a23eee24bcd3e2414010a6f7f75ac2ac571aa77%2Fsrc%2Flandmark_localizer%2Flocalizer.py%23L18-L31&style=default&type=code&showBorder=on&showLineNumbers=on&showFullPath=on&showCopy=on"></script>
+          </p>
+          <p>
+            And finally <code>optimize()</code> can be called on demand to optimize the entire graph. In practice we do this every time step.
+            <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Flocobot_landmark_slam%2Fblob%2F1a23eee24bcd3e2414010a6f7f75ac2ac571aa77%2Fsrc%2Flandmark_localizer%2Flocalizer.py%23L148-L160&style=default&type=code&showBorder=on&showLineNumbers=on&showFullPath=on&showCopy=on"></script>
+          </p>
+
+          <b>ROS Topic</b>
+          <p>
+            
+          </p>
+
         <!-- TODO: Aaron -->
         <ul>
           <li>talk about AprilTags on floor used as landmarks</li>
