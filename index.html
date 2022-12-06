@@ -316,14 +316,46 @@
 
           <b>ROS Topic</b>
           <p>
-            
+            We felt it would be most effective and ROS-like to encapsulate the Landmark SLAM tasks into its own ROS package. This would allow us to launch it independently, have it listen directly to topics to get all the data it needs, and then continuously publish to the topic <code>/landmark_slam/estimated_pose</code>. Now our main BlockBot class no longer needed to handle all the calls to the BlockBotLocalizer to keep the estimated pose up to date. It simply subscribes to to the <code>/landmark_slam/estimated_pose</code> topic and updates a class property.
+          </p>
+          <p>
+            Some useful ROS links:
+            <ul>
+              <li><a href="http://wiki.ros.org/ROS/Tutorials/CreatingPackage" target="_blank">Creating a ROS Package</a></li>
+              <li><a href="http://wiki.ros.org/ROS/Tutorials/UnderstandingTopics" target="_blank">Understanding ROS Topics</a></li>
+              <li><a href="http://wiki.ros.org/ROS/Tutorials/WritingPublisherSubscriber%28python%29" target="_blank">Writing a Simple Publisher and Subscriber</a></li>
+            </ul>
+          </p>
+          <p>
+            The <a href="https://github.com/awpollon/locobot_landmark_slam/blob/main/scripts/localizer_listener.py" target="_blank">LocalizerListener</a> creates a ROS node and runs continuously to manage the <a href="https://github.com/awpollon/locobot_landmark_slam/blob/main/src/landmark_localizer/localizer.py" target="_blank">BlockBotLocalizer</a>, listening to the following topics directly:
+            <ul>
+              <li><code>/locobot/mobile_base/commands/reset_odometry</code>: To re-instantiate the factor graph when the LoCoBot has it's odometry reset.</li>
+              <li><code>/locobot/mobile_base/odom</code>: Get the current odometry pose.</li>
+              <li><code>/tag_detections</code>: Data for all AprilTag's currently visible. The specific landmarks IDs are configured in the launch file.</li>
+              <li><code>/locobot/joint_states</code>: To lookup the current camera tilt.</li>
+            </ul>
+          </p>
+          <p>
+            Every 1/10 of a second, data from these topics are read and observations added to the GTSAM factor graph.
+            <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Flocobot_landmark_slam%2Fblob%2F1f9972a587298c23dd0ac208fcd427c3ce39ace3%2Fscripts%2Flocalizer_listener.py%23L79-L98&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
+          </p>
+          <p>
+            The launch file specifies the namespace <code>/landmark_slam</code>, sets the AprilTag IDs for the landmarks, and directs to run the listener script.
+            <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Flocobot_landmark_slam%2Fblob%2F1f9972a587298c23dd0ac208fcd427c3ce39ace3%2Flaunch%2Flocalizer.launch%23L1-L6&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
+          </p>
+          <p>
+            And finally <code>roslaunch</code> is used to execute the launch file. We put this along with the required "source" command in a bash script to allow a background daemon process to execute.
+            <!-- TODO Maybe add script. Or reference saml if we talk about those -->
           </p>
 
-        <!-- TODO: Aaron -->
-        <ul>
-          <li>talk about AprilTags on floor used as landmarks</li>
-        </ul>
-      </div>
+          <b>Assessment</b>
+          <p>
+            To demonstrate the effectiveness of our Landmark SLAM implementation, the bin to deposit the block in is placed at the starting position, and no other identification or detection is used (we do not use the AprilTag on the bin). Once a block is picked up it is directed to travel back to the origin and deposit the block. The bin is large enough to account for small errors, but if the localization is too off it will fail to drop the block in the bin. We also marked the starting position on the floor as a visual indication to us how far off the position estimate is.
+          </p>
+          <p>
+            We found the the localization was effective and there was a noticeable improvement in consistently making it to the block when landmarks were used. It was most noticeable when it came ot the pose angle, as without landmarks it's angle towards the box had more error. At first we faced challenges getting Landmark SLAM working due to odometry noise model being too large relative to the landmark noise. Furthermore as we improved and corrected our bearing and range calculations, the performance improved. Logging the odometry values along with estimated pose and comparing was useful to help tune and assess. It was also useful to log GTSAM's estimated landmark positions at each time step to confirm the positions were remaining consistent.
+          </p>
+
 
       <div id="pid">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">PID CONTROL</span></h5>
