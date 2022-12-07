@@ -90,14 +90,23 @@
           The LoCoBots we used are hosted by the <a href="https://cs.gmu.edu/~robotics/pmwiki.php/Main/HomePage" target="_blank">GMU Autonomous Robotics Laboratory</a>, and configured by Michael Schader. Some of the information here on getting started is installation dependent and may change overtime.
         </p>
         <p>
-          To start the LoCoBot, you will need to power on both the base (toggle switch on the side) and the onboard Mini PC located under the frame (push button, lights up blue). The rechargeable on board power supply provides plenty of charge for a few hours of use. Once the PC is powered on, the accompanying laptop computer can be used to SSH wirelessly to the onboard PC. Must be connected to the MASON network in the lab (not MASON SECURE). Each LoCoBot is numbered, so the for example, ssh locobot04.
+          To start the LoCoBot, you will need to power on both the base (toggle switch on the side) and the onboard Mini PC located under the frame (push button, lights up blue). The rechargeable on board power supply provides plenty of charge for a few hours of use. Once the PC is powered on, the accompanying laptop computer can be used to SSH wirelessly to the onboard PC. Must be connected to the MASON network in the lab (not MASON SECURE). Each LoCoBot is numbered, so the for example, <code>ssh locobot04</code>.
         </p>
         <p>
-           <b>Tips/b>
+          The Locobot PCs are running on Ubuntu 20.04 focal and are already configured to start development. We recommend creating your own directory for your files. There are several ROS nodes that need to be launched to operate the Locobot, but these can be easily stopped and started via aliased daemon scripts. Run one of the following:
+          <ol>
+            <li><code>sam</code> - "Mobile" mode, the standard operation</li>
+            <li><code>sas</code> - "Stationary" mode, disables base operations (maybe you need to work on a table)</li>
+            <li><code>saj</code> - "Joystick" mode, control with a PS4 controller. This is fun!</li>
+          </ol>
+
+        </p>
+        <p>
+           <b>Tips</b>
             <ul>
               <li><a href="http://wiki.ros.org/rosbag/Commandline" target="_blank">Rosbag</a> is an essential tool that can record and playback specified topics. This was very helpful both for troubleshooting and developing the Localizer code offline in a VM. We wrote a <a href="https://github.com/awpollon/cs685_locobot_blocks/blob/main/scripts/record_bag.sh" target="_blank">bash script</a> to record the topics we needed. Don't do all the topics, as the camera ones take up a lot of space.</li>
-              <li>When in motion, a validation is added to check if the base bumper hits anything to stop the motion (no rogue robots!)</li>
-              <li>The topic <code>/scan</code> can be used to get the LIDAR readings.</li>
+              <li>When in motion, a validation is added to check if the base bumper hits anything to stop the motion (no rogue robots!). Easy way to command a halt without killing the script. </li>
+              <li>The topic <code/scan</code> can be used to get the LIDAR readings.</li>
               <li><a href="https://www.trossenrobotics.com/docs/interbotix_xslocobots/ros_packages/navigation_stack_configuration.html" target="_blank">Navigation Stack </a> provides many rich features and mapping visualization. LoCoBot needs to be connected to a monitor for visuals in Rviz. We wish we had more time to play around with this!</li>
               <li>It is possible to SSH to the GMU Locobots from a personal laptop (though we only got a Mac to work). Ask Michael, us, or one of the lab faculty.</li>
               <li>VS Code is great for development and offers a ROS extension and supports step debugging. Setting <a href="https://code.visualstudio.com/docs/remote/ssh" target="_blank">Remote Development using SSH</a> in VS Code could save lots of time!</li>
