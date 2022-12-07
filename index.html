@@ -33,7 +33,6 @@
     <a href="#kinematics">SEARCH & IK</a>
     <a href="#landmark-slam">LANDMARK SLAM</a>
     <a href="#pid">PID CONTROL</a>
-    <a href="#rosbag">ROSBAG</a>
     <a href="#demo">DEMO</a>
     <a href="#conclusion">CONCLUSION</a>
     <a href="#extensions">FUN EXTENSIONS</a>
@@ -51,7 +50,7 @@
         <p class="content">This project was done as a part of the CS685 Autonomous Robotics course at George Mason University, and supported by the <a href="https://cs.gmu.edu/~robotics/pmwiki.php/Main/HomePage" target="_blank">GMU Autonomous Robotics Laboratory</a>. We were interested in experimenting with a real robot and chose to work with the <a href="https://www.trossenrobotics.com/locobot-px100.aspx" target="_blank">LoCoBot PX100</a>. We sought to demonstrate a task completing robot supported by ROS and its supporting APIs. We chose a "toy" problem of a block collecting robot that incorporates the concepts of Inverse Kinematics, Control, Probabilistic Robotics, Tracking and Localization, SLAM that were taught in the <a href="https://cs.gmu.edu/media/syllabi/Fall2022/CS_685SteinG001.pdf" target="_blank">course</a>, to let a robot navigate through and interact with the environment to perform basic tasks. The project was developed using <a href="http://wiki.ros.org/noetic" target="_blank">ROS Noetic</a>, which the LoCoBot supports seamlessly.</p>
 
         <p class="content next">
-          This tutorial is an informal introduction to using the LoCoBot and a walkthrough of each of the components that make up our project. We'll also discuss some practical tips and the challenges we faced. The LoCoBots offer a variety of sensors and capabilities that are very accessible to beginners, students, and researchers. We only scratched the surface of what is possible. We hope that sharing our experience through this tutorial will assist future students in leveraging the GMU Autonomous Robotics Lab's fleet of LoCoBots. We look forward to the cool projects to come!
+          This tutorial is an informal introduction to using the LoCoBot and a walk through of each of the components that make up our project. We'll also discuss some practical tips and the challenges we faced. The LoCoBots offer a variety of sensors and capabilities that are very accessible to beginners, students, and researchers. We only scratched the surface of what is possible. We hope that sharing our experience through this tutorial will assist future students in leveraging the GMU Autonomous Robotics Lab's fleet of LoCoBots. We look forward to the cool projects to come!
         </p>
 
         <center><img src="/assets/images/locobots.jpg" style="width:20%;" class="w3-margin-top"></center>
@@ -75,6 +74,7 @@
               <li>RPLIDAR A2M8 360° Laser Range Scanner</li>
               <li>MoveIt Support</li>
             </ul>
+            <a href="https://docs.trossenrobotics.com/interbotix_xslocobots_docs/index.html" target="_blank">View the LoCoBot documentation here.</a>
             </p>
           </div>
           <div class="column">
@@ -416,14 +416,6 @@
         </div>
       </div>
 
-      <div id="rosbag">
-        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">ROSBAG</span></h5>
-        <p class="content">
-          <!-- TODO: Sashank -->
-          <i>Add details on how to use rosbag and why it's useful.</i>
-        </p>
-      </div>
-
       <div id="demo">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">DEMO</span></h5>
         <p class="content">Here's a demo of the robot following the <a href="#objective">plan</a>.</p>
@@ -453,7 +445,7 @@
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">FUN EXTENSIONS</span></h5>
         <!-- TODO: Sai -->
         <p class="content">
-          Here are some subgoals we wanted to achieve, but couldn't because of the limited time:
+          Here are some additional subgoals we wanted to achieve, but couldn't because of the limited time:
         <ul>
           <li><b>Multi-block search</b> - Perform the same plan, go back and search for another block</li>
           <li><b>Bin search</b> - Just like the block, search for the bin in the environment. The <code>find_goal()</code> is already configured to search for an AprilTag on the bin</li>
@@ -472,6 +464,8 @@
           <center><img src="/assets/images/block.jpg" style="width:15%;" class="w3-margin-top"></center>
           <li>The bin, in which the block is dropped, is placed right behind the initial pose so the robot doesn't have to search for the bin</li>
           <li>Since the motion after finding the block in search is faster than the alignment motion, the robot travels to a distance away from the block to speed the plan</li>
+          
+          <li><a href="http://wiki.ros.org/rosbag/Commandline" target="_blank">Rosbag</a> is an essential tool that can record and playback specified topics. This was very helpful both for troubleshooting and developing the Localizer code offline in a VM. We wrote a <a href="https://github.com/awpollon/cs685_locobot_blocks/blob/main/scripts/record_bag.sh" target="_blank">bash script</a> to record the topics we needed. Don't do all the topics, as the camera ones take up a lot of space.</li> 
           <li>Since the AprilTag on the block is small, the robot might not track it all the times. So the search has a threshold that ensures travel doesn't start until the block is within <code>BLOCK_DETECTION_RANGE</code> meters</li>
           <li>The path to the block and the bin is free from obstacles</li>
           <li>The landmark AprilTags were placed on the ground, to make use of the same camera tilt used for search and not switch between tilts. Only camera tilts were used, no pans</li>
