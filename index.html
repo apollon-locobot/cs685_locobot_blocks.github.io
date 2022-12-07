@@ -74,7 +74,7 @@
             <div class="content">
               LoCoBot PX100, a.k.a "Low-Cost Robot", from Trossen Robotics (Interbotix) starts from about $3000 and has the following features:
               <ul>
-                <li>Create 3 from iRobot (base)</li>
+                <li>Kobuki Base from Yujin Robot (YMR-K01-W1)</li>
                 <li>Intel NUC NUC8i3BEH Mini PC</li>
                 <li>Intel RealSense Depth Camera D435</li>
                 <li>PincherX 100 Robot Arm (4 degrees of freedom)</li>
@@ -318,7 +318,7 @@
                   <div class="img-desc">Fig. 11. Bearing/Range Triangles</div>
                 </center>
               </p>
-              <p>
+              <p>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
                 We use the tag's <code>shifted_x</code> value to project the <code>ground_projection</code> to the camera center. Imagine a line parallel to the ground that goes from the camera to the plane of the tag.
 
                 <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Flocobot_landmark_slam%2Fblob%2F1a23eee24bcd3e2414010a6f7f75ac2ac571aa77%2Fsrc%2Flandmark_localizer%2Flocalizer.py%23L52&style=default&type=code&showBorder=on&showFullPath=on&showCopy=on"></script>
@@ -381,7 +381,7 @@
             <div class="content" </div>
               <b>Overview</b>
               <p>
-                In order to accurately travel to goal pose's, including returning back to the "home" position where the bin is located, the robot needs top track where it is. The Create3 publishes the current odometry on the topic <code>/locobot/odom</code>. Conveniently Interbotix provides a <code>get_odom()</code> function that produces a simple 2D pose, rather than the quaternion.
+                In order to accurately travel to goal pose's, including returning back to the "home" position where the bin is located, the robot needs top track where it is. The Kobuki mobile base publishes the current odometry on the topic <code>/locobot/odom</code>. Conveniently Interbotix provides a <code>get_odom()</code> function that produces a simple 2D pose, rather than the quaternion.
               </p>
               <p>
                 Odometry by itself for localizing the LoCoBot isn't too bad, especially just driving in a straight line. However as it starts to make turns and move further, it starts to become inaccurate. We sought to demonstrate an effective use of Landmark SLAM to improve the LoCoBot's estimate of it's current pose.
@@ -480,7 +480,7 @@
             <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">PID CONTROL</span></h5>
             <div class="content">
               <p>
-                The LoCoBot is built upon the iRobot Create 3 base (a Roomba), a differential drive robot.The linear and angular velocities can be commanded directly by issuing a Twist message to the topic <code>/locobot/cmd_vel</code>. The Interbotix API offers a function <code>command_velocity(x=0, yaw=0)</code> that handles the publishing. This is designed to be called repeatedly by a controller. A Proportional Integral Derivative (PID) controller is a proven method for setting control values to reach a target set point accurately with minimal oscillation. We found <a href="https://pidexplained.com/pid-controller-explained/" target="_blank">PID Explained</a> to be a helpful resource.
+                The LoCoBot is built upon the Yujin Robot's Kobuki Base, a differential drive robot.The linear and angular velocities can be commanded directly by issuing a Twist message to the topic <code>/locobot/cmd_vel</code>. The Interbotix API offers a function <code>command_velocity(x=0, yaw=0)</code> that handles the publishing. This is designed to be called repeatedly by a controller. A Proportional Integral Derivative (PID) controller is a proven method for setting control values to reach a target set point accurately with minimal oscillation. We found <a href="https://pidexplained.com/pid-controller-explained/" target="_blank">PID Explained</a> to be a helpful resource.
               <p>
                 As part of this project, we implemented our own PID controller. Specifically two Python classes:
               </p>
