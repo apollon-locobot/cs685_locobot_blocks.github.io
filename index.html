@@ -131,18 +131,26 @@
                 <code class="content">locobot.base.move(-.2,-1,2)</code>
               </p>
               <p>
-                Now let's move the arm. There are two preset poses:
-                <code>locobot.arm.go_to_home_pose()</code>
-                <code>locobot.arm.go_to_sleep_pose()</code>
+                Now let's move the arm. There are two preset poses:<br>
+                <code style="margin-left: 16px;">locobot.arm.go_to_home_pose()</code><br>
+                <code style="margin-left: 16px;">locobot.arm.go_to_sleep_pose()</code>
+              </p>
+              <p>
+                To use MoveIt to plan a trajectory and execute a successful one, use <code>locobot.arm.set_ee_cartesian_trajectory()</code> providing the <code>x, y, z</code> values. When in home pose, <code>x, y, z</code> are all <code>0</code>. Play around with the values to find which plans work and what positions are reachable.
               </p>
               <p>
                 Always make sure the arm is in the sleep pose before terminating the processes. The torque will stop, causing the arm to fall if not at the sleep pose.
               </p>
               <p>
+                The functions <code>locobot.gripper.open(), locobot.gripper.close()</code> can be used to open and close the end-effector of the arm.
+              </p>
+              <p>
+                The function <code>locobot.base.command_velocity()</code> could be used to move the robot, and check how much the robot thinks it moved using <code>locobot.base.get_odom()</code> that provides the <code>(x, y, yaw)</code> with respect to the origin. The origin is the position where the robot initiates or can be manually set using <code>locobot.base.reset_odom()</code>
+              </p>
+              <p>
                 To tilt the camera, pass an angle in radians to this function. 0 is parallel to the ground, positive angles are towards the ground.
                 <code class="content">locobot.camera.tilt(.5)</code>
               </p>
-              <!-- TODO: Add move arm  and base functions -->
               <p>
                 Interacting with the Interbotix Locobot API in a shell is a great way to discover other functions and get a feel for how to control. We recommend taking some time to manually direct the robot via the shell to see what is possible. You can wrap a function around the Python <code>help()</code> function to get more information, or consult the Interbotix documentation.
               </p>
@@ -172,16 +180,6 @@
                   </center>
                 </ul>
               </div>
-
-              <!-- TODO: Remove this -->
-              <!-- <i>Add a quick guide on how to use LoCoBot and anything to work on this project. Pointers:</i>
-          <ul>
-            <li>turning the locobot on/off</li>
-            <li>sa, sam, saj</li>
-            <li>The local website</li>
-            <li>arm, camera, base, joints, etc of the bot</li>
-            <li>python scipt</li>
-          </ul> -->
             </div>
           </div>
 
