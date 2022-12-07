@@ -110,8 +110,8 @@
               To terminate, run <code>sa</code> in the same terminal window. You may need to repeat and should get confirmation the processes have stopped. The LIDAR spin is a useful indicator of the state as well as the base chimes.
             </p>
             <p>
-              Interbotix provides a <a href="https://github.com/Interbotix/interbotix_ros_toolboxes/blob/main/interbotix_xs_toolbox/interbotix_xs_modules/src/interbotix_xs_modules/locobot.py">locobot.py</a>module with the InterbotixLocobotXS class. If everything is running you can start controlling right away by importing this module and calling the API commands. Michael Schader created a simple bash script that runs a Python shell with the class loaded (located at ~/mds-locobot/scripts/python3.sh):
-              <div>
+              Interbotix provides a <a href="https://github.com/Interbotix/interbotix_ros_toolboxes/blob/main/interbotix_xs_toolbox/interbotix_xs_modules/src/interbotix_xs_modules/locobot.py">locobot.py</a> module with the InterbotixLocobotXS class. If everything is running you can start controlling right away by importing this module and calling the API commands. Michael Schader created a simple bash script that runs a Python shell with the class loaded (located at ~/mds-locobot/scripts/python3.sh):
+              <div class="content">
                 <code>
                 python3 -ic 'from interbotix_xs_modules.locobot import InterbotixLocobotXS <br/>
                 locobot = InterbotixLocobotXS("locobot_'${LOCOBOT_MODEL}'", "mobile_'${LOCOBOT_MODEL}'")'
@@ -120,20 +120,22 @@
             </p>
             <p>
               You can now start driving. Here's a simple API command to drive forward .2 m/s for 2 seconds:
-              <code class="content">locobot.base.move(.2,0,2)</code>
+              <div><code class="content">locobot.base.move(.2,0,2)</code></div>
             </p>
             <p>
               Now let's rotate. This will rotate counterclockwise for 1 radian/second for two seconds. In your code we recommend using math.pi in your angular velocity units and pose angles.
-              <code class="content">locobot.base.move(0,1,2)</code>
+              <div><code class="content">locobot.base.move(0,1,2)</code>
             </p>
             <p>
               And of course you can combine both and go backwards, clockwise:
-              <code class="content">locobot.base.move(-.2,-1,2)</code>
+              <div><code class="content">locobot.base.move(-.2,-1,2)</code></div>
             </p>
             <p>
               Now let's move the arm. There are two preset poses:<br>
-              <code style="margin-left: 16px;">locobot.arm.go_to_home_pose()</code><br>
-              <code style="margin-left: 16px;">locobot.arm.go_to_sleep_pose()</code>
+              <div class="content"></div>
+                <code style="margin-left: 16px;">locobot.arm.go_to_home_pose()</code><br>
+                <code style="margin-left: 16px;">locobot.arm.go_to_sleep_pose()</code>
+              </div>
             </p>
               <p>
                 To use MoveIt to plan a trajectory and execute a successful one, use <code>locobot.arm.set_ee_cartesian_trajectory()</code> providing the <code>x, y, z</code> values. When in home pose, <code>x, y, z</code> are all <code>0</code>. Play around with the values to find which plans work and what positions are reachable.
@@ -145,7 +147,7 @@
                 The functions <code>locobot.gripper.open(), locobot.gripper.close()</code> can be used to open and close the end-effector of the arm.
               </p>
               <p>
-                The function <code>locobot.base.command_velocity()</code> could be used to move the robot, and check how much the robot thinks it moved using <code>locobot.base.get_odom()</code> that provides the <code>(x, y, yaw)</code> with respect to the origin. The origin is the position where the robot initiates or can be manually set using <code>locobot.base.reset_odom()</code>
+                The function <code>locobot.base.command_velocity()</code> could be used to move the robot, and check how much the robot thinks it moved using <code>locobot.base.get_odom()</code> that provides the <code>(x, y, yaw)</code> with respect to the origin. The origin is the position where the robot initiates or can be manually set using <code>locobot.base.reset_odom()</code>.
               </p>
               <p>
                 To tilt the camera, pass an angle in radians to this function. 0 is parallel to the ground, positive angles are towards the ground.
@@ -158,15 +160,15 @@
                 <b>Tips</b>
                 <ul>
                   <li>Rosboard is a great dashboard to explore all the available ROS topics their published data in realtime. It is accessbile at http://locobot04:8888 (replace 04 with your Locobot number). Of particular use is the <code>/tag-detections-image</code>, which will display the current camera frame and any AprilTags detected. We used this very often. </li>
-                  <li><a href="http://wiki.ros.org/rosbag/Commandline" target="_blank">Rosbag</a> is an essential tool that can record and playback specified topics. This was very helpful both for troubleshooting and developing the Localizer code offline in a VM. We wrote a <a href="https://github.com/awpollon/cs685_locobot_blocks/blob/main/scripts/record_bag.sh" target="_blank">bash script</a> to record the topics we needed. Don't do all the topics, as the camera ones take up a lot of space</li>
+                  <li><a href="http://wiki.ros.org/rosbag/Commandline" target="_blank">Rosbag</a> is an essential tool that can record and playback specified topics. This was very helpful both for troubleshooting and developing the Localizer code offline in a VM. We wrote a <a href="https://github.com/awpollon/cs685_locobot_blocks/blob/main/scripts/record_bag.sh" target="_blank">bash script</a> to record the topics we needed. Don't do all the topics, as the camera ones take up a lot of space.</li>
                   <li>When in motion, a validation is added to check if the base bumper hits anything to stop the motion (no rogue robots!). Easy way to command a halt without killing the script</li>
-                  <li>The topic <code>/scan</code> can be used to get the LIDAR readings</li>
+                  <li>The topic <code>/scan</code> can be used to get the LIDAR readings.</li>
                   <li><a href="https://www.trossenrobotics.com/docs/interbotix_xslocobots/ros_packages/navigation_stack_configuration.html" target="_blank">Navigation Stack </a> provides many rich features and mapping visualization. LoCoBot needs to be connected to a monitor for visuals in Rviz. We wish we had more time to play around with this!</li>
-                  <li>It is possible to SSH to the GMU Locobots from a personal laptop (though we only got a Mac to work). Ask Michael, us, or one of the lab faculty</li>
+                  <li>It is possible to SSH to the GMU Locobots from a personal laptop (though we only got a Mac to work). Ask Michael, us, or one of the lab faculty.</li>
                   <li>VS Code is great for development and offers a ROS extension and supports step debugging. Setting <a href="https://code.visualstudio.com/docs/remote/ssh" target="_blank">Remote Development using SSH</a> in VS Code could save lots of time!</li>
-                  <li>The topic <code>/scan</code> can be used to get the LIDAR readings</li>
-                  <li>Create log files and log any raw data for calculations, so that after a run it's easier to analyze the log files for issues in calculations</li>
-                  <li>Make a plan (preferably with subgoals) and implement the subgoals as individual functions. This is better for modularity, maintenance, testing, and debugging</li>
+                  <li>The topic <code>/scan</code> can be used to get the LIDAR readings.</li>
+                  <li>Create log files and log any raw data for calculations, so that after a run it's easier to analyze the log files for issues in calculations.</li>
+                  <li>Make a plan (preferably with subgoals) and implement the subgoals as individual functions. This is better for modularity, maintenance, testing, and debugging.</li>
                   <li>Having detailed logging is essential for debugging. Direct your outputs to log files rather than the terminal.</li>
                   <li>The supplies shown in Fig. 1 were super handy while working on the project. Colored <a href="https://www.barbizon.com/product_info/pro-tape-gaffer-tape-gaffer-tape-blue-spike-tape-1-2x55yd.html" target="_blank">spike tape</a>, commonly used in theater, is particularly helpful for marking the ground (full disclosure: Aaron's wife works for Barbizon)</li>
                   <center>
@@ -469,7 +471,7 @@
                 To demonstrate the effectiveness of our Landmark SLAM implementation, the bin to deposit the block in is placed at the starting position, and no other identification or detection is used (we do not use the AprilTag on the bin). Once a block is picked up it is directed to travel back to the origin and deposit the block. The bin is large enough to account for small errors, but if the localization is too off it will fail to drop the block in the bin. We also marked the starting position on the floor as a visual indication to us how far off the position estimate is.
               </p>
               <p>
-                We found the the localization was effective and there was a noticeable improvement in consistently making it to the block when landmarks were used. It was most noticeable when it came ot the pose angle, as without landmarks it's angle towards the box had more error. At first we faced challenges getting Landmark SLAM working due to odometry noise model being too large relative to the landmark noise. Furthermore as we improved and corrected our bearing and range calculations, the performance improved. Logging the odometry values along with estimated pose and comparing was useful to help tune and assess. It was also useful to log GTSAM's estimated landmark positions at each time step to confirm the positions were remaining consistent.
+                We found the the localization was effective and there was a noticeable improvement in consistently making it to the block when landmarks were used. It was most noticeable when it came to the pose angle, as without landmarks it's angle towards the box had more error. At first we faced challenges getting Landmark SLAM working due to odometry noise model being too large relative to the landmark noise. Furthermore as we improved and corrected our bearing and range calculations, the performance improved. Logging the odometry values along with estimated pose and comparing was useful to help tune and assess. It was also useful to log GTSAM's estimated landmark positions at each time step to confirm the positions were remaining consistent.
               </p>
             </div>
           </div>
@@ -532,7 +534,7 @@
             <p class="content">
               <b>Description:</b> <br>
               <span>
-                The robot starts at the origin (x=0, y=0, yaw=0) with the bin right behind it (x=0, y=0, yaw=-π). The landmarks (large AprilTags) were placed on the ground, the block was placed within the <code>CAMERA_SETTINGS.search_tilt</code> view. Once initiated, the robot searches for the block infront, left, and right of it. As the block isn't detectedm the robot moves forward by <code>SEARCH_INCREMENT_X</code> meters, and searches in the three fields of view again. Though the block can be seen now, it isn't within <code>BLOCK_DETECTION_RANGE</code> meters, so it moves forward. Now, as the block is nearby, the robot travels in the direction of the block such that it is <code>BLOCK_TRAVEL_RADIUS</code> meters away from the block. It tilts the camera to <code>CAMERA_SETTINGS.tilt</code> and starts aligning with the block until it is <code>GRABBING_RADIUS</code> away from the block. The arm then goes to the home pose, then to the ground, move forward by <code>GRABBING_ERROR_DISTANCE</code> meters, grabs the block, and returns the arm to the sleep pose. When in motion, the robot detects the landmarks on the ground and uses landmark localization through GTSAM to accurately predict its location. With the block grabbed, the robot travels back to the origin, but to the bin's pose (0, 0, -π). It then moves the arm to the home pose, moves forward, dropts the block, moves the arm to the sleep pose, and rotates back to the initial pose (0, 0, 0).
+                The robot starts at the origin (x=0, y=0, yaw=0) with the bin right behind it (x=0, y=0, yaw=-π). The landmarks (large AprilTags) were placed on the ground, the block was placed within the <code>CAMERA_SETTINGS.search_tilt</code> view. Once initiated, the robot searches for the block infront, left, and right of it. As the block isn't detected, the robot moves forward by <code>SEARCH_INCREMENT_X</code> meters, and searches in the three fields of view again. Though the block can be seen now, it isn't within <code>BLOCK_DETECTION_RANGE</code> meters, so it moves forward. Now, as the block is nearby, the robot travels in the direction of the block such that it is <code>BLOCK_TRAVEL_RADIUS</code> meters away from the block. It tilts the camera to <code>CAMERA_SETTINGS.tilt</code> and starts aligning with the block until it is <code>GRABBING_RADIUS</code> away from the block. The arm then goes to the home pose, then to the ground, move forward by <code>GRABBING_ERROR_DISTANCE</code> meters, grabs the block, and returns the arm to the sleep pose. When in motion, the robot detects the landmarks on the ground and uses landmark localization through GTSAM to accurately predict its location. With the block grabbed, the robot travels back to the origin, but to the bin's pose (0, 0, -π). It then moves the arm to the home pose, moves forward, dropts the block, moves the arm to the sleep pose, and rotates back to the initial pose (0, 0, 0).
               </span>
             </p>
           </div>
@@ -553,7 +555,6 @@
               <li>Since the AprilTag on the block is small, the robot might not track it all the times. So the search has a threshold that ensures travel doesn't start until the block is within <code>BLOCK_DETECTION_RANGE</code> meters</li>
               <li>The path to the block and the bin is free from obstacles</li>
               <li>The landmark AprilTags were placed on the ground, to make use of the same camera tilt used for search and not switch between tilts. Only camera tilts were used, no pans</li>
-              <li>When in motion, a validation is added to check if the base bumper hits anything to stop the motion. Adding this early stage would save you from running to the robot when it's rogue</li>
             </ul>
             </p>
           </div>
