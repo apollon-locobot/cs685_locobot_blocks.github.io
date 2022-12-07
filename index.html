@@ -105,10 +105,11 @@
             Interbotix provides a <a href="https://github.com/Interbotix/interbotix_ros_toolboxes/blob/main/interbotix_xs_toolbox/interbotix_xs_modules/src/interbotix_xs_modules/locobot.py">locobot.py</a>module with the InterbotixLocobotXS class. If everything is running you can start controlling right away by importing this module and calling the API commands. Michael Schader created a simple bash script that runs a Python shell with the class loaded (located at ~/mds-locobot/scripts/python3.sh):
           <div>
             <code>
-              python3 -ic 'from interbotix_xs_modules.locobot import InterbotixLocobotXS <br/>
-              locobot = InterbotixLocobotXS("locobot_'${LOCOBOT_MODEL}'", "mobile_'${LOCOBOT_MODEL}'")'
-            </code>
+                python3 -ic 'from interbotix_xs_modules.locobot import InterbotixLocobotXS <br/>
+                locobot = InterbotixLocobotXS("locobot_'${LOCOBOT_MODEL}'", "mobile_'${LOCOBOT_MODEL}'")'
+              </code>
           </div>
+          </p>
           <p>
             You can now start driving. Here's a simple API command to drive forward:
             <br><code>locobot.base.move(.2,0,2)</code>
@@ -123,32 +124,39 @@
             And of course you can combine both and go backwards, clockwise:
             <br><code>locobot.base.move(-.2,-1,2)</code>
           </p>
+          <p>
+            Now let's move the arm. There are two preset poses:
+            <code>locobot.arm.go_to_home_pose()</code>
+            <code>locobot.arm.go_to_sleep_pose()</code>
           </p>
           <p>
-            <b>Tips</b>
-          <ul>
-            <li><a href="http://wiki.ros.org/rosbag/Commandline" target="_blank">Rosbag</a> is an essential tool that can record and playback specified topics. This was very helpful both for troubleshooting and developing the Localizer code offline in a VM. We wrote a <a href="https://github.com/awpollon/cs685_locobot_blocks/blob/main/scripts/record_bag.sh" target="_blank">bash script</a> to record the topics we needed. Don't do all the topics, as the camera ones take up a lot of space</li>
-            <li>When in motion, a validation is added to check if the base bumper hits anything to stop the motion (no rogue robots!). Easy way to command a halt without killing the script</li>
-            <li>The topic <code>/scan</code> can be used to get the LIDAR readings</li>
-            <li><a href="https://www.trossenrobotics.com/docs/interbotix_xslocobots/ros_packages/navigation_stack_configuration.html" target="_blank">Navigation Stack </a> provides many rich features and mapping visualization. LoCoBot needs to be connected to a monitor for visuals in Rviz. We wish we had more time to play around with this!</li>
-            <li>It is possible to SSH to the GMU Locobots from a personal laptop (though we only got a Mac to work). Ask Michael, us, or one of the lab faculty</li>
-            <li>VS Code is great for development and offers a ROS extension and supports step debugging. Setting <a href="https://code.visualstudio.com/docs/remote/ssh" target="_blank">Remote Development using SSH</a> in VS Code could save lots of time!</li>
-            <li>The topic <code>/scan</code> can be used to get the LIDAR readings</li>
-            <li>Create log files and log any raw data for calculations, so that after a run it's easier to analyze the log files for issues in calculations</li>
-            <li>Make a plan (preferably with subgoals) and implement the subgoals as individual functions. This is better for modularity, maintenance, testing, and debugging</li>
-            <li>Having detailed logging is essential for debugging. Direct your outputs to log files rather than the terminal.</li>
-            <li>The supplies shown in Fig. 1 were super handy while working on the project</li>
-            <center>
-              <img src="/assets/images/supplies.jpg" style="width:15%;" class="w3-margin-top">
-              <div class="img-desc">Fig. 1. The objective of the project</div>
-            </center>
-            <li>Definitely, have a whiteboard in your workspace. Always helps writing down what's going on (don't ask what's on our board)</li>
-            <center>
-              <img src="/assets/images/whiteboard.jpg" style="width:15%;" class="w3-margin-top">
-              <div class="img-desc">Fig. 2. Our (messy) whiteboard</div>
-            </center>
-          </ul>
+            Always make sure the arm is in the sleep pose before terminating the processes. The torque will stop, causing the arm to fall if not at the sleep pose.
           </p>
+          <p>
+            To tilt the camera, pass an angle in radians to:
+            <br><code>locobot.camera.tilt(.5)</code>
+            <br>0 is parallel to the ground, positive angles are towards the ground.
+          </p>
+          <!-- TODO: Add move arm  and base functions -->
+          <p>
+            Interacting with the Interbotix Locobot API in a shell is a great way to discover other functions and get a feel for how to control. We recommend taking some time to manually direct the robot via the shell to see what is possible. You can wrap a function around the Python <code>help()</code> function to get more information, or consult the Interbotix documentation.
+          </p>
+          <div class="content">
+            <b>Tips</b>
+            <ul>
+              <li>Rosboard is a great dashboard to explore all the available ROS topics their published data in realtime. It is accessbile at http://locobot04:8888 (replace 04 with your Locobot number). Of particular use is the <code>/tag-detections-image</code>, which will display the current camera frame and any AprilTags detected. We used this very often. </li>
+              <li><a href="http://wiki.ros.org/rosbag/Commandline" target="_blank">Rosbag</a> is an essential tool that can record and playback specified topics. This was very helpful both for troubleshooting and developing the Localizer code offline in a VM. We wrote a <a href="https://github.com/awpollon/cs685_locobot_blocks/blob/main/scripts/record_bag.sh" target="_blank">bash script</a> to record the topics we needed. Don't do all the topics, as the camera ones take up a lot of space</li>
+              <li>When in motion, a validation is added to check if the base bumper hits anything to stop the motion (no rogue robots!). Easy way to command a halt without killing the script</li>
+              <li>The topic <code>/scan</code> can be used to get the LIDAR readings</li>
+              <li><a href="https://www.trossenrobotics.com/docs/interbotix_xslocobots/ros_packages/navigation_stack_configuration.html" target="_blank">Navigation Stack </a> provides many rich features and mapping visualization. LoCoBot needs to be connected to a monitor for visuals in Rviz. We wish we had more time to play around with this!</li>
+              <li>It is possible to SSH to the GMU Locobots from a personal laptop (though we only got a Mac to work). Ask Michael, us, or one of the lab faculty</li>
+              <li>VS Code is great for development and offers a ROS extension and supports step debugging. Setting <a href="https://code.visualstudio.com/docs/remote/ssh" target="_blank">Remote Development using SSH</a> in VS Code could save lots of time!</li>
+              <li>The topic <code>/scan</code> can be used to get the LIDAR readings</li>
+              <li>Create log files and log any raw data for calculations, so that after a run it's easier to analyze the log files for issues in calculations</li>
+              <li>Make a plan (preferably with subgoals) and implement the subgoals as individual functions. This is better for modularity, maintenance, testing, and debugging</li>
+              <li>Having detailed logging is essential for debugging. Direct your outputs to log files rather than the terminal.</li>
+            </ul>
+          </div>
 
           <!-- TODO: Remove this -->
           <!-- <i>Add a quick guide on how to use LoCoBot and anything to work on this project. Pointers:</i>
@@ -307,7 +315,7 @@
         <p class="content">
           The first subgoal was to search the block by rotating and grab it, when the base was stationary (see Fig. 12, 13, 14). Then the robot was certain of its location when SLAM was implemented, so we integrated motion with PID and started searching for the block outside its view. When initiated, the robot first looks for the block in its current view, then on its left, and then on its right (rotating by <code>ROTATION_INCREMENT</code> w.r.t origin). If the robot doesn't find the block it moves forward by <code>SEARCH_INCREMENT_X</code> meters. If in any of the view the robot finds the block, it travels to a point that is <code>BLOCK_TRAVEL_RADIUS</code> meters away from the block and starts alignment. As the robot searches in one direction, we only check left, straight, and right covering specific field only. The search code is available <code>find_goal()</code>.
 
-        <div class="row">
+        <div class="content row">
           <div class="column">
             <center>
               <img src="/assets/images/circle.jpg" style="width:50%;" class="w3-margin-top">
@@ -328,7 +336,8 @@
           </div>
         </div>
 
-        <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2F5f9e61d8196ca24718a6d3e725c17d75670eaf8c%2Fblockbot.py%23L166-L209&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
+        <p class="content">
+          <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2F5f9e61d8196ca24718a6d3e725c17d75670eaf8c%2Fblockbot.py%23L166-L209&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
 
         </p>
 
