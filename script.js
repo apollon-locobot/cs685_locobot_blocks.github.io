@@ -20,4 +20,4 @@ if (mobileCheck()) {
     document.getElementById("video-container").classList.add("video-container");
 }
 
-openNav()
+// openNav()
