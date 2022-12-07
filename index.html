@@ -192,7 +192,16 @@
               <img src="/assets/images/Project_Flow_Chart.png" style="width:90%;" class="w3-margin-top">
               <div class="img-desc">Fig. 3. The objective of the project</div>
             </center>
-          </div>
+            <p>
+          <b>Project Structure</b>
+          The main project file is <a href="https://github.com/awpollon/cs685_locobot_blocks/blob/main/blockbot.py" target="_blank">blockbot.py</a>. Our BlockBot class inherits from InterbotixLocobotXS, therefore the Locobot API is available to us as class methods and we can implement our own higher level logic. The method <code>execute_sequence()</code> starts the state sequence above.
+        </p>
+        <p>
+          Similar to Michael's shell script, we implemented blockbot_shell.sh to instantiate our BlockBot class and run commands. It was convenient to be able to re-run or experiment as needed. The script also redirects the Python output to a log file.
+          <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2F2bd69b44f010f75990766f606392f85e249c55a5%2Fblockbot_shell.sh&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
+        </p>
+
+      </div>
 
           <!-- TODO: Add a brief project structure section so we can mention relevent files, how to run them, and link to repo (or put repo links at top) -->
 
@@ -319,7 +328,10 @@
                 Now we can add the <code>camera_radius_offset</code> to get the base of the larger triangle. We can now solve for the bearing and range values.
                 <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Flocobot_landmark_slam%2Fblob%2F1a23eee24bcd3e2414010a6f7f75ac2ac571aa77%2Fsrc%2Flandmark_localizer%2Flocalizer.py%23L55-L59&style=default&type=code&showBorder=on&showFullPath=on&showCopy=on"></script>
               </p>
-              <!-- TODO: Check code for negating bearing. I think x to the right is POSITIVE -->
+              <p>
+            Return the values, though since the camera is upside down we need to flip the bearing angle.
+            <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Flocobot_landmark_slam%2Fblob%2F1dfb8b1eac3f6167bf568dc06ead8df5ea161b2d%2Fsrc%2Flandmark_localizer%2Flocalizer.py%23L61-L62&style=default&type=code&showBorder=on&showFullPath=on&showCopy=on"></script>
+          </p>
             </div>
           </div>
 
