@@ -34,7 +34,6 @@
     <a href="#landmark-slam">LANDMARK SLAM</a>
     <a href="#pid">PID CONTROL</a>
     <a href="#demo">DEMO</a>
-    <a href="#conclusion">CONCLUSION</a>
     <a href="#extensions">FUN EXTENSIONS</a>
     <a href="#simplifications">SIMPLIFICATIONS</a>
     <a href="#credits">CREDITS</a>
@@ -104,25 +103,28 @@
           <p>
             <b>Tips</b>
           <ul>
-            <li><a href="http://wiki.ros.org/rosbag/Commandline" target="_blank">Rosbag</a> is an essential tool that can record and playback specified topics. This was very helpful both for troubleshooting and developing the Localizer code offline in a VM. We wrote a <a href="https://github.com/awpollon/cs685_locobot_blocks/blob/main/scripts/record_bag.sh" target="_blank">bash script</a> to record the topics we needed. Don't do all the topics, as the camera ones take up a lot of space.</li>
-            <li>When in motion, a validation is added to check if the base bumper hits anything to stop the motion (no rogue robots!). Easy way to command a halt without killing the script. </li>
-            <li>The topic <code /scan</code> can be used to get the LIDAR readings.</li>
-              <li><a href="https://www.trossenrobotics.com/docs/interbotix_xslocobots/ros_packages/navigation_stack_configuration.html" target="_blank">Navigation Stack </a> provides many rich features and mapping visualization. LoCoBot needs to be connected to a monitor for visuals in Rviz. We wish we had more time to play around with this!</li>
-              <li>It is possible to SSH to the GMU Locobots from a personal laptop (though we only got a Mac to work). Ask Michael, us, or one of the lab faculty.</li>
-              <li>VS Code is great for development and offers a ROS extension and supports step debugging. Setting <a href="https://code.visualstudio.com/docs/remote/ssh" target="_blank">Remote Development using SSH</a> in VS Code could save lots of time!</li>
-            </ul>
-        </p>
+            <li><a href="http://wiki.ros.org/rosbag/Commandline" target="_blank">Rosbag</a> is an essential tool that can record and playback specified topics. This was very helpful both for troubleshooting and developing the Localizer code offline in a VM. We wrote a <a href="https://github.com/awpollon/cs685_locobot_blocks/blob/main/scripts/record_bag.sh" target="_blank">bash script</a> to record the topics we needed. Don't do all the topics, as the camera ones take up a lot of space</li>
+            <li>When in motion, a validation is added to check if the base bumper hits anything to stop the motion (no rogue robots!). Easy way to command a halt without killing the script</li>
+            <li>The topic <code>/scan</code> can be used to get the LIDAR readings</li>
+            <li><a href="https://www.trossenrobotics.com/docs/interbotix_xslocobots/ros_packages/navigation_stack_configuration.html" target="_blank">Navigation Stack </a> provides many rich features and mapping visualization. LoCoBot needs to be connected to a monitor for visuals in Rviz. We wish we had more time to play around with this!</li>
+            <li>It is possible to SSH to the GMU Locobots from a personal laptop (though we only got a Mac to work). Ask Michael, us, or one of the lab faculty</li>
+            <li>VS Code is great for development and offers a ROS extension and supports step debugging. Setting <a href="https://code.visualstudio.com/docs/remote/ssh" target="_blank">Remote Development using SSH</a> in VS Code could save lots of time!</li>
+            <li>The topic <code>/scan</code> can be used to get the LIDAR readings</li>
+            <li>Create log files and log any raw data for calculations, so that after a run it's easier to analyze the log files for issues in calculations</li>
+            <li>Make a plan (preferably with subgoals) and implement the subgoals as individual functions. This is better for modularity, maintenance, testing, and debugging</li>
+          </ul>
+          </p>
           <!-- TODO: Sai, Aaron -->
 
           <i>Add a quick guide on how to use LoCoBot and anything to work on this project. Pointers:</i>
-        <ul>
-          <li>turning the locobot on/off</li>
-          <li>sa, sam, saj</li>
-          <li>The local website</li>
-          <li>arm, camera, base, joints, etc of the bot</li>
-          <li>python scipt</li>
-        </ul>
-      </div>
+          <ul>
+            <li>turning the locobot on/off</li>
+            <li>sa, sam, saj</li>
+            <li>The local website</li>
+            <li>arm, camera, base, joints, etc of the bot</li>
+            <li>python scipt</li>
+          </ul>
+        </div>
       </div>
 
       <div id="objective">
@@ -156,15 +158,15 @@
           </p>
           <p>
             The <code>/tag_detections</code> topic provides the list of AprilTag detections. The relevant AprilTag information was extracted from this and stored in the class variables (check <code>get_tag_data()</code>).
-              </p>
-              <b>Understanding AprilTag Values:</b> <br>
-              <p>
-                The Interbotix provides an <a href="https://github.com/Interbotix/interbotix_ros_toolboxes/blob/main/interbotix_perception_toolbox/interbotix_perception_modules/src/interbotix_perception_modules/apriltag.py" target="_blank">AprilTag Module</a> to combine the camera information with the AprilTag pixel data to provide real meter values for the tag detection data.
-              </p>
+          </p>
+          <b>Understanding AprilTag Values:</b> <br>
+          <p>
+            The Interbotix provides an <a href="https://github.com/Interbotix/interbotix_ros_toolboxes/blob/main/interbotix_perception_toolbox/interbotix_perception_modules/src/interbotix_perception_modules/apriltag.py" target="_blank">AprilTag Module</a> to combine the camera information with the AprilTag pixel data to provide real meter values for the tag detection data.
+          </p>
 
-              <p>
-                The raw AprilTag <code>detections</code> provided by <code>/tag_detections</code> topic include the pose and orientation of the AprilTag with respect to the camera (see Fig. 3). To understand the values, let's consider the AprilTag with ID 5 (the tag on the robot arm in Fig. 2). The <code>detections[0].pose.pose.pose</code> has the required information, where <code>position</code> is the estimated position of the AprilTag and the <code>orientation</code> is the tilt of the tag in all dimensions with respect to the camera's field.
-              </p>
+          <p>
+            The raw AprilTag <code>detections</code> provided by <code>/tag_detections</code> topic include the pose and orientation of the AprilTag with respect to the camera (see Fig. 3). To understand the values, let's consider the AprilTag with ID 5 (the tag on the robot arm in Fig. 2). The <code>detections[0].pose.pose.pose</code> has the required information, where <code>position</code> is the estimated position of the AprilTag and the <code>orientation</code> is the tilt of the tag in all dimensions with respect to the camera's field.
+          </p>
         </div>
         <div class="row">
           <div class="column">
@@ -447,18 +449,8 @@
         </p>
       </div>
 
-      <div id="conclusion">
-        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">CONCLUSION</span></h5>
-        <!-- TODO: Aaron -->
-        <ul>
-          <li>challanges in pid, slam, trig</li>
-          <li>writing functions for each functionality</li>
-        </ul>
-      </div>
-
       <div id="extensions">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">FUN EXTENSIONS</span></h5>
-        <!-- TODO: Sai -->
         <p class="content">
           Here are some additional subgoals we wanted to achieve, but couldn't because of the limited time:
         <ul>
@@ -486,8 +478,6 @@
           <li>The path to the block and the bin is free from obstacles</li>
           <li>The landmark AprilTags were placed on the ground, to make use of the same camera tilt used for search and not switch between tilts. Only camera tilts were used, no pans</li>
           <li>When in motion, a validation is added to check if the base bumper hits anything to stop the motion. Adding this early stage would save you from running to the robot when it's rogue</li>
-          <li>The topic <code>/scan</code> can be used to get the LIDAR readings</li>
-          <li>Create log files and log any raw data for calculations, so that after a run it's easier to analyze the log files for issues in calculations</li>
         </ul>
         </p>
       </div>
