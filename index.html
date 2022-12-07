@@ -203,8 +203,6 @@
 
       </div>
 
-          <!-- TODO: Add a brief project structure section so we can mention relevent files, how to run them, and link to repo (or put repo links at top) -->
-
           <div id="apriltag">
             <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">APRILTAG</span></h5>
             <div class="w3-panel w3-leftbar w3-light-grey" style="margin: 26px;">
@@ -313,7 +311,6 @@
               </p>
               <p>
                 Now we need to consider that not only does the <code>camera_radius_offset</code> impact the true range, but also the bearing. Here is the full trigonometry problem we can solve. Since we already accounted for the camera's x offset, we can assume the camera is centered int he diagram.
-                <!-- TODO: Add fill diagram -->
                 <center>
                   <img src="/assets/images/bearing_range_triangle.jpg" style="width:30%;" class="w3-margin-top">
                   <div class="img-desc">Fig. 11. Bearing/Range Triangles</div>
@@ -463,7 +460,8 @@
               </p>
               <p>
                 And finally <code>roslaunch</code> is used to execute the launch file. We put this along with the required "source" command in a bash script to allow a background daemon process to execute.
-                <!-- TODO Maybe add script. Or reference saml if we talk about those -->
+                <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2Fa2ca117b3b4a55fd1511ca1d765131bc5f0c182b%2Fdaemons%2Flaunch-landmark-slam.sh&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
+                <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2Fa2ca117b3b4a55fd1511ca1d765131bc5f0c182b%2Fdaemons%2Fstart-blockbot-background&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on"></script>
               </p>
 
               <b>Assessment</b>
