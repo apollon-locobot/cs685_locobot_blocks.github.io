@@ -96,10 +96,21 @@
           <ol>
             <li><code>sam</code> - "Mobile" mode, the standard operation</li>
             <li><code>sas</code> - "Stationary" mode, disables base operations (maybe you need to work on a table)</li>
-            <li><code>saj</code> - "Joystick" mode, control with a PS4 controller. This is fun!</li>
+            <li><code>saj</code> - "Joystick" mode, control with a PS4 controller. This is fun and gives you a feel for how the robot handles!</li>
           </ol>
 
-          </p>
+            To terminate, run <code>sa</code> in the same terminal window. You may need to repeat and should get confirmation the processes have stopped. The LIDAR spin is a useful indicator as well as the base chimes.
+        </p>
+        <p>
+          Interbotix provides a <a href="https://github.com/Interbotix/interbotix_ros_toolboxes/blob/main/interbotix_xs_toolbox/interbotix_xs_modules/src/interbotix_xs_modules/locobot.py">locobot.py</a>module with the InterbotixLocobotXS class. If everything is running you can start controlling right away by importing this module and calling the API commands. Michael Schader created a simple script that runs a Python shell with the class loaded:
+          <div>
+            <code>
+              python3 -ic 'from interbotix_xs_modules.locobot import InterbotixLocobotXS <br/>
+              locobot = InterbotixLocobotXS("locobot_'${LOCOBOT_MODEL}'", "mobile_'${LOCOBOT_MODEL}'")'
+            </code>
+          </div>
+
+        </p>
           <p>
             <b>Tips</b>
           <ul>
@@ -112,6 +123,7 @@
             <li>The topic <code>/scan</code> can be used to get the LIDAR readings</li>
             <li>Create log files and log any raw data for calculations, so that after a run it's easier to analyze the log files for issues in calculations</li>
             <li>Make a plan (preferably with subgoals) and implement the subgoals as individual functions. This is better for modularity, maintenance, testing, and debugging</li>
+            <li>Having detailed logging is essential for debugging. Direct your outputs to log files rather than the terminal.</li>
           </ul>
           </p>
 
