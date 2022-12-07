@@ -86,28 +86,28 @@
       <div id="quick-guide">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">QUICK GUIDE</span></h5>
         <div class="content">
-        <p>
-          The LoCoBots we used were setup by the GMU Robotics Lab. Some of the information here on getting started is installation dependent and may change overtime.
-        </p>
-        <p>
-          To start the LoCoBot, you will need to power on both the base (toggle switch on the side) and the onboard Mini PC located under the frame (push button, lights up blue). The rechargeable on board power supply provides plenty of charge for a few hours of use. Once the PC is powered on, the accompanying laptop computer can be used to SSH wirelessly to the onboard PC. Must be connected to the MASON network in the lab (not MASON SECURE). Each LoCoBot is numbered, so the for example, ssh locobot04.
-        </p>
-        <p>
-           
-        </p>
+          <p>
+            The LoCoBots we used were setup by the GMU Robotics Lab. Some of the information here on getting started is installation dependent and may change overtime.
+          </p>
+          <p>
+            To start the LoCoBot, you will need to power on both the base (toggle switch on the side) and the onboard Mini PC located under the frame (push button, lights up blue). The rechargeable on board power supply provides plenty of charge for a few hours of use. Once the PC is powered on, the accompanying laptop computer can be used to SSH wirelessly to the onboard PC. Must be connected to the MASON network in the lab (not MASON SECURE). Each LoCoBot is numbered, so the for example, ssh locobot04.
+          </p>
+          <p>
+
+          </p>
           <!-- TODO: Sai, Aaron -->
 
           <i>Add a quick guide on how to use LoCoBot and anything to work on this project. Pointers:</i>
-        <ul>
-          <li>turning the locobot on/off</li>
-          <li>sa, sam, saj</li>
-          <li>The local website</li>
-          <li>arm, camera, base, joints, etc of the bot</li>
-          <li>python scipt</li>
-          <li>Nav Stack - https://www.trossenrobotics.com/docs/interbotix_xslocobots/ros_packages/navigation_stack_configuration.html (LoCoBot needs to be connected to a monitor for this)</li>
-          <li>Setting <a href="https://code.visualstudio.com/docs/remote/ssh" target="_blank">Remote Development using SSH</a> in VS Code could save lots of time</li>
-        </ul>
-      </div>
+          <ul>
+            <li>turning the locobot on/off</li>
+            <li>sa, sam, saj</li>
+            <li>The local website</li>
+            <li>arm, camera, base, joints, etc of the bot</li>
+            <li>python scipt</li>
+            <li>Nav Stack - https://www.trossenrobotics.com/docs/interbotix_xslocobots/ros_packages/navigation_stack_configuration.html (LoCoBot needs to be connected to a monitor for this)</li>
+            <li>Setting <a href="https://code.visualstudio.com/docs/remote/ssh" target="_blank">Remote Development using SSH</a> in VS Code could save lots of time</li>
+          </ul>
+        </div>
       </div>
 
       <div id="objective">
@@ -142,11 +142,11 @@
           <p>
             The <code>/tag_detections</code> topic provides the list of AprilTag detections. The relevant AprilTag information was extracted from this and stored in the class variables (check <code>get_tag_data()</code>).
           </p>
-          <b>Understanding AprilTag Values</b> <br>
+          <b>Understanding AprilTag Values:</b> <br>
           <p>
-            The Interbotix provides an <a href="https://github.com/Interbotix/interbotix_ros_toolboxes/blob/main/interbotix_perception_toolbox/interbotix_perception_modules/src/interbotix_perception_modules/apriltag.py">AprilTag Module</a> to combine the camera information with the AprilTag pixel data to provide real meter values for the tag detection data.
+            The Interbotix provides an <a href="https://github.com/Interbotix/interbotix_ros_toolboxes/blob/main/interbotix_perception_toolbox/interbotix_perception_modules/src/interbotix_perception_modules/apriltag.py" target="_blank">AprilTag Module</a> to combine the camera information with the AprilTag pixel data to provide real meter values for the tag detection data.
           </p>
-          
+
           <p>
             The raw AprilTag <code>detections</code> provided by <code>/tag_detections</code> topic include the pose and orientation of the AprilTag with respect to the camera (see Fig. 3). To understand the values, let's consider the AprilTag with ID 5 (the tag on the robot arm in Fig. 2). The <code>detections[0].pose.pose.pose</code> has the required information, where <code>position</code> is the estimated position of the AprilTag and the <code>orientation</code> is the tilt of the tag in all dimensions with respect to the camera's field.
           </p>
@@ -184,7 +184,7 @@
           <div class="column">
             <center>
               <img src="/assets/images/apriltag_expl_3.jpg" style="width:90%;" class="w3-margin-top">
-              <div class="img-desc">Fig. 5. Bird's-eye view of the robot and the AprilTag</div>
+              <div class="img-desc">Fig. 6. Bird's-eye view of the robot and the AprilTag</div>
             </center>
           </div>
         </div>
@@ -210,7 +210,7 @@
             By placing AprilTags on objects or on the ground, they can be used to calculate the bearing and range from the robot's center to the center of the AprilTag. These values are always relative to the robot's pose at the time of the detection. We used this in two ways: to estimate the block's coordinates to drive close to it, and to detect relative landmark positions to aide in localization.
             <center>
               <img src="/assets/images/range_bearing_explained.jpg" style="width:20%;" class="w3-margin-top">
-              <div class="img-desc">Robot Bearing and Range</div>
+              <div class="img-desc">Fig. 7. Robot Bearing and Range (bird's-eye view)</div>
             </center>
           </p>
           <p>
@@ -224,7 +224,7 @@
             To keep the measurement inline with the odometry, we further take into account that the left camera performing the tag detections is not at the center of the robot. A combination of measurements and trial-and-error led us to the values below, though you could consider adjusting, particularly the <code>camera_radius_offset</code>. To handle the left camera's offset from the robot's true heading center, we can simply subtract the offset from the tag's x value (since it's in real meters).
             <center>
               <img src="/assets/images/camera_offsets.jpg" style="width:20%;" class="w3-margin-top">
-              <div class="img-desc">Measured camera offsets</div>
+              <div class="img-desc">Fig. 8. Measured camera offsets (bird's-eye view)</div>
             </center>
 
             <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Flocobot_landmark_slam%2Fblob%2F1a23eee24bcd3e2414010a6f7f75ac2ac571aa77%2Fsrc%2Flandmark_localizer%2Flocalizer.py%23L42-L46&style=default&type=code&showBorder=on&showFullPath=on&showCopy=on"></script>
@@ -234,7 +234,7 @@
             <!-- TODO: Add fill diagram -->
             <center>
               <img src="/assets/images/bearing_range_triangle.jpg" style="width:30%;" class="w3-margin-top">
-              <div class="img-desc">Bearing/Range Triangles</div>
+              <div class="img-desc">Fig. 9. Bearing/Range Triangles</div>
             </center>
           </p>
           <p>
@@ -272,7 +272,7 @@
 
       <div id="landmark-slam">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">LANDMARK SLAM</span></h5>
-        <div class="content"</div>
+        <div class="content" </div>
           <b>Overview</b>
           <p>
             In order to accurately travel to goal pose's, including returning back to the "home" position where the bin is located, the robot needs top track where it is. The Create3 publishes the current odometry on the topic <code>/locobot/odom</code>. Conveniently Interbotix provides a <code>get_odom()</code> function that produces a simple 2D pose, rather than the quaternion.
@@ -281,7 +281,7 @@
             Odometry by itself for localizing the LoCoBot isn't too bad, especially just driving in a straight line. However as it starts to make turns and move further, it starts to become inaccurate. We sought to demonstrate an effective use of Landmark SLAM to improve the LoCoBot's estimate of it's current pose.
           </p>
           <p>
-            Imagine you are lost driving in a city. You know where you started and roughly how far you've driven and maybe the direction you went, but not well enough to say exactly where you are (and no GPS signal!). You make a turn and suddenly see a pizza place you've driven past before, and then a gas station you previously stopped at. Now you know exactly where you are located. 
+            Imagine you are lost driving in a city. You know where you started and roughly how far you've driven and maybe the direction you went, but not well enough to say exactly where you are (and no GPS signal!). You make a turn and suddenly see a pizza place you've driven past before, and then a gas station you previously stopped at. Now you know exactly where you are located.
           </p>
           <p>
             We placed four large AprilTags on the ground to serve as stationary landmarks. At every time step the robot can register what landmark tags are visible, and their bearing and range relative to the robot. For simplicity the robot always knows which landmark it is detecting via the AprilTag ID. A future project could ignore the tag ID values and experiment with performing data association of unknown landmarks.
@@ -331,20 +331,20 @@
           </p>
           <p>
             Some useful ROS links:
-            <ul>
-              <li><a href="http://wiki.ros.org/ROS/Tutorials/CreatingPackage" target="_blank">Creating a ROS Package</a></li>
-              <li><a href="http://wiki.ros.org/ROS/Tutorials/UnderstandingTopics" target="_blank">Understanding ROS Topics</a></li>
-              <li><a href="http://wiki.ros.org/ROS/Tutorials/WritingPublisherSubscriber%28python%29" target="_blank">Writing a Simple Publisher and Subscriber</a></li>
-            </ul>
+          <ul>
+            <li><a href="http://wiki.ros.org/ROS/Tutorials/CreatingPackage" target="_blank">Creating a ROS Package</a></li>
+            <li><a href="http://wiki.ros.org/ROS/Tutorials/UnderstandingTopics" target="_blank">Understanding ROS Topics</a></li>
+            <li><a href="http://wiki.ros.org/ROS/Tutorials/WritingPublisherSubscriber%28python%29" target="_blank">Writing a Simple Publisher and Subscriber</a></li>
+          </ul>
           </p>
           <p>
             The <a href="https://github.com/awpollon/locobot_landmark_slam/blob/main/scripts/localizer_listener.py" target="_blank">LocalizerListener</a> creates a ROS node and runs continuously to manage the <a href="https://github.com/awpollon/locobot_landmark_slam/blob/main/src/landmark_localizer/localizer.py" target="_blank">BlockBotLocalizer</a>, listening to the following topics directly:
-            <ul>
-              <li><code>/locobot/mobile_base/commands/reset_odometry</code>: To re-instantiate the factor graph when the LoCoBot has it's odometry reset.</li>
-              <li><code>/locobot/mobile_base/odom</code>: Get the current odometry pose.</li>
-              <li><code>/tag_detections</code>: Data for all AprilTag's currently visible. The specific landmarks IDs are configured in the launch file.</li>
-              <li><code>/locobot/joint_states</code>: To lookup the current camera tilt.</li>
-            </ul>
+          <ul>
+            <li><code>/locobot/mobile_base/commands/reset_odometry</code>: To re-instantiate the factor graph when the LoCoBot has it's odometry reset.</li>
+            <li><code>/locobot/mobile_base/odom</code>: Get the current odometry pose.</li>
+            <li><code>/tag_detections</code>: Data for all AprilTag's currently visible. The specific landmarks IDs are configured in the launch file.</li>
+            <li><code>/locobot/joint_states</code>: To lookup the current camera tilt.</li>
+          </ul>
           </p>
           <p>
             Every 1/10 of a second, data from these topics are read and observations added to the GTSAM factor graph.
@@ -374,11 +374,11 @@
         <div class="content">
           <p>
             The LoCoBot is built upon the iRobot Create 3 base (a Roomba), a differential drive robot.The linear and angular velocities can be commanded directly by issuing a Twist message to the topic <code>/locobot/cmd_vel</code>. The Interbotix API offers a function <code>command_velocity(x=0, yaw=0)</code> that handles the publishing. This is designed to be called repeatedly by a controller. A Proportional Integral Derivative (PID) controller is a proven method for setting control values to reach a target set point accurately with minimal oscillation. We found <a href="https://pidexplained.com/pid-controller-explained/" target="_blank">PID Explained</a> to be a helpful resource.
-            <p>
-              As part of this project, we implemented our own PID controller. Specifically two Python classes:
-            </p>
+          <p>
+            As part of this project, we implemented our own PID controller. Specifically two Python classes:
           </p>
-        
+          </p>
+
           <b><a href="https://github.com/awpollon/cs685_locobot_blocks/blob/main/pid_controller.py" target="_blank">PIDController</a></b>
           <p>
             A generic PID Controller implementation. Designed to be passed in the error each call of <code>stpe()</code>, which then returns the control value. A new PID Controller instance should be created each time a new goal set point is needed. KP, KI, and KD gain values can be specified upon instantiation.
@@ -397,7 +397,7 @@
             <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2Fe751d425d4ae496ef815fc2a088058d090ec10a8%2Flocobot_controller.py%23L91&style=default&type=code&showBorder=on&showLineNumbers=on&showFullPath=on&showCopy=on"></script>
           </p>
           <p>
-            Since we can set the linear and angular velocities directly, we can use separate PID Controller instances to minimize each of the distance to the goal point the relative again. If tuned right these two controllers should balance eah other to make progress towards the goal, adjusting automatically to changes in error. We add the constraint that the LoCoBot should only move forward, and therefore the error to the linear velocity controller is always positive.<a href="https://w3.cs.jmu.edu/molloykp/teaching/cs354/cs354_2021Fall/resources/pid.pdf" target="_blank">Controlling Physical Systems</a> by Nathan Sprague explains the idea of separate controllers for differential drive velocity control, as well as a good overview of PID Controllers in general.
+            Since we can set the linear and angular velocities directly, we can use separate PID Controller instances to minimize each of the distance to the goal point the relative again. If tuned right these two controllers should balance eah other to make progress towards the goal, adjusting automatically to changes in error. We add the constraint that the LoCoBot should only move forward, and therefore the error to the linear velocity controller is always positive. <a href="https://w3.cs.jmu.edu/molloykp/teaching/cs354/cs354_2021Fall/resources/pid.pdf" target="_blank">Controlling Physical Systems</a> by Nathan Sprague explains the idea of separate controllers for differential drive velocity control, as well as a good overview of PID Controllers in general.
             <script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fawpollon%2Fcs685_locobot_blocks%2Fblob%2Fe751d425d4ae496ef815fc2a088058d090ec10a8%2Flocobot_controller.py%23L98-L99&style=default&type=code&showBorder=on&showLineNumbers=on&showFullPath=on&showCopy=on"></script>
           </p>
           <p>
@@ -469,14 +469,18 @@
         <ul>
           <li>To avoid using Deep Learning models (like YOLO) to find the block using vision, we've added an AprilTag to the block</li>
           <li>Since there are two camera tilts to search for the block from far away and align when near the block, two AprilTags were added for accurate detections in both tilts</li>
-          <center><img src="/assets/images/block.jpg" style="width:15%;" class="w3-margin-top"></center>
+          <center>
+            <img src="/assets/images/block.jpg" style="width:15%;" class="w3-margin-top">
+            <div class="img-desc">Fig. 10. Block used for the project, with 2 AprilTags</div>
+          </center>
           <li>The bin, in which the block is dropped, is placed right behind the initial pose so the robot doesn't have to search for the bin</li>
           <li>Since the motion after finding the block in search is faster than the alignment motion, the robot travels to a distance away from the block to speed the plan</li>
           <li>Since the AprilTag on the block is small, the robot might not track it all the times. So the search has a threshold that ensures travel doesn't start until the block is within <code>BLOCK_DETECTION_RANGE</code> meters</li>
           <li>The path to the block and the bin is free from obstacles</li>
           <li>The landmark AprilTags were placed on the ground, to make use of the same camera tilt used for search and not switch between tilts. Only camera tilts were used, no pans</li>
-          <li>When in motion, a validation is added to check if the base bumper hits anything to stop the motion (no rogue robots!)</li>
+          <li>When in motion, a validation is added to check if the base bumper hits anything to stop the motion. Adding this early stage would save you from running to the robot when it's rogue</li>
           <li>The topic <code>/scan</code> can be used to get the LIDAR readings</li>
+          <li>Create log files and log any raw data for calculations, so that after a run it's easier to analyze the log files for issues in calculations</li>
         </ul>
         </p>
       </div>
@@ -497,11 +501,21 @@
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">REFERENCES</span></h5>
         <p class="content">
         <ul>
-          <li><a href="http://wiki.ros.org/apriltag_ros" target="_blank">AprilTags</a></li>
+          <li><a href="https://april.eecs.umich.edu/software/apriltag" target="_blank">AprilTag</a></li>
+          <li><a href="http://wiki.ros.org/apriltag_ros" target="_blank">AprilTag ROS</a></li>
+          <li><a href="https://github.com/AprilRobotics/apriltag/wiki/AprilTag-User-Guide" target="_blank">AprilTag User Guide</a></li>
+          <li><a href="https://w3.cs.jmu.edu/molloykp/teaching/cs354/cs354_2021Fall/resources/pid.pdf" target="_blank">Controlling Physical Systems</a></li>
+          <li><a href="http://wiki.ros.org/ROS/Tutorials/CreatingPackage" target="_blank">Creating a ROS Package</a></li>
+          <li><a href="https://gtsam.org/" target="_blank">GTSAM</a></li>
+          <li><a href="https://github.com/borglab/gtsam" target="_blank">GTSAM GitHub</a></li>
+          <li><a href="https://pidexplained.com/how-to-tune-a-pid-controller/" target="_blank">How to tune PID Controller</a></li>
           <li><a href="https://www.trossenrobotics.com/docs/interbotix_xsarms/index.html" target="_blank">Interbotix Arms</a></li>
           <li><a href="https://github.com/Interbotix/interbotix_ros_toolboxes/blob/cdb8e7b77eb6be31d20bc77c947f5ba34525f4ec/interbotix_xs_toolbox/interbotix_xs_modules/src/interbotix_xs_modules/locobot.py" target="_blank">Interbotix LoCoBot API</a></li>
-          <li><a href="https://pidexplained.com/how-to-tune-a-pid-controller/" target="_blank">How to tune PID Controller</a></li>
-          <li><a href="https://gtsam.org/" target="_blank">GTSAM</a></li>
+          <li><a href="http://robots.stanford.edu/probabilistic-robotics/" target="_blank">Probabilistic Robotics</a></li>
+          <li><a href="http://wiki.ros.org/noetic" target="_blank">ROS Noetic</a></li>
+          <li><a href="https://code.visualstudio.com/docs/remote/ssh" target="_blank">Remote Development using SSH</a></li>
+          <li><a href="http://wiki.ros.org/ROS/Tutorials/UnderstandingTopics" target="_blank">Understanding ROS Topics</a></li>
+          <li><a href="http://wiki.ros.org/ROS/Tutorials/WritingPublisherSubscriber%28python%29" target="_blank">Writing a Simple Publisher and Subscriber</a></li>
         </ul>
         </p>
       </div>
