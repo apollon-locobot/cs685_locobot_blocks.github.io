@@ -46,7 +46,7 @@
     <div class="w3-sand w3-large">
       <div id="introduction">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">INTRODUCTION</span></h5>
-        <p class="content">This project was done as a part of the CS685 Autonomous Robotics course at George Mason University. We were interested in experimenting with a real robot and chose to work with the <a href="https://www.trossenrobotics.com/locobot-px100.aspx" target="_blank">LoCoBot PX100</a>. We sought to demonstrate a task completing robot supported by ROS and its supporting APIs. We chose a "toy" problem of a block collecting robot that incorporates the concepts of Inverse Kinematics, Control, Probabilistic Robotics, Tracking and Localization, SLAM that were taught in the <a href="https://cs.gmu.edu/media/syllabi/Fall2022/CS_685SteinG001.pdf" target="_blank">course</a>, to let a robot navigate through and interact with the environment to perform basic tasks. The project was developed using <a href="http://wiki.ros.org/noetic" target="_blank">ROS Noetic</a>, which the LoCoBot supports seamlessly.</p>
+        <p class="content">This project was done as a part of the CS685 Autonomous Robotics course at George Mason University. We were interested in experimenting with a real robot and ROS, and therefore chose to work with the <a href="https://www.trossenrobotics.com/locobot-px100.aspx" target="_blank">LoCoBot PX100</a>. We chose a "toy" problem of a block collecting robot that incorporates the concepts of Inverse Kinematics, Control, Probabilistic Robotics, Mapping and Localization, and Perception that were taught in the <a href="https://cs.gmu.edu/media/syllabi/Fall2022/CS_685SteinG001.pdf" target="_blank">course</a>, to let a robot navigate through and interact with the environment to perform basic tasks. The project was developed using <a href="http://wiki.ros.org/noetic" target="_blank">ROS Noetic</a>, which the LoCoBot supports seamlessly.</p>
 
         <p class="content next">
           This tutorial is an informal introduction to using the LoCoBot and a walk through of each of the components that make up our project. We'll also discuss some practical tips and the challenges we faced. The LoCoBots offer a variety of sensors and capabilities that are very accessible to beginners, students, and researchers. We only scratched the surface of what is possible. We hope that sharing our experience through this tutorial will assist future students in leveraging the GMU Autonomous Robotics Lab's fleet of LoCoBots. We look forward to the cool projects to come!
@@ -93,11 +93,11 @@
           </p>
           <p>
             The Locobot PCs are running on Ubuntu 20.04 focal and are already configured to start development. We recommend creating your own directory for your files. There are several ROS nodes that need to be launched to operate the Locobot, but these can be easily stopped and started via aliased daemon scripts. Run one of the following:
-            <ol>
-              <li><code>sam</code> - "Mobile" mode, the standard operation</li>
-              <li><code>sas</code> - "Stationary" mode, disables base operations (maybe you need to work on a table)</li>
-              <li><code>saj</code> - "Joystick" mode, control with a PS4 controller. This is fun and gives you a feel for how the robot handles!</li>
-            </ol>
+            <div>
+              <code>sam</code> - "Mobile" mode, the standard operation<br>
+              <code>sas</code> - "Stationary" mode, disables base operations (maybe you need to work on a table)<br>
+              <code>saj</code> - "Joystick" mode, control with a PS4 controller. This is fun and gives you a feel for how the robot handles!
+            <div>
 
             To terminate, run <code>sa</code> in the same terminal window. You may need to repeat and should get confirmation the processes have stopped. The LIDAR spin is a useful indicator of the state as well as the base chimes.
           </p>
@@ -111,18 +111,16 @@
             </div>
           </p>
           <p>
-            You can now start driving. Here's a simple API command to drive forward: 
-            <br><code>locobot.base.move(.2,0,2)</code>
-            <br>This commands the base to move .2 meters/second, no rotation, for 2 seconds.
+            You can now start driving. Here's a simple API command to drive forward .2 m/s for 2 seconds:
+            <code class="content">locobot.base.move(.2,0,2)</code>
           </p>
           <p>
-            Now let's rotate. This will rotate counterclockwise for 1 radian/second for two seconds.
-            <br><code>locobot.base.move(0,1,2)</code>
-            <br>In your code we recommend using math.pi in your angular velocity units and pose angles.
+            Now let's rotate. This will rotate counterclockwise for 1 radian/second for two seconds. In your code we recommend using math.pi in your angular velocity units and pose angles.
+            <code class="content">locobot.base.move(0,1,2)</code>
           </p>
           <p>
             And of course you can combine both and go backwards, clockwise:
-            <br><code>locobot.base.move(-.2,-1,2)</code>
+            <code class="content">locobot.base.move(-.2,-1,2)</code>
           </p>
           <p>
             Now let's move the arm. There are two preset poses:
@@ -133,9 +131,8 @@
             Always make sure the arm is in the sleep pose before terminating the processes. The torque will stop, causing the arm to fall if not at the sleep pose.
           </p>
           <p>
-            To tilt the camera, pass an angle in radians to:
-            <br><code>locobot.camera.tilt(.5)</code>
-            <br>0 is parallel to the ground, positive angles are towards the ground.
+            To tilt the camera, pass an angle in radians to this function. 0 is parallel to the ground, positive angles are towards the ground.
+            <code class="content">locobot.camera.tilt(.5)</code>
           </p>
           <!-- TODO: Add move arm  and base functions -->
           <p>
