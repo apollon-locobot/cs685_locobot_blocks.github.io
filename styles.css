@@ -44,7 +44,7 @@ html {
   text-decoration: none;
   font-size: 25px;
   color: white;
-  transition: 0.3s;
+  /* transition: 0.3s; */
   background-color: black;
   font-weight: 600 !important;
 }
@@ -137,7 +137,7 @@ a:hover {
 }
 
 #main {
-  transition: margin-left .5s;
+  /* transition: margin-left .5s; */
   padding: 20px;
 }
 

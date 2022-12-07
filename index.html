@@ -34,15 +34,15 @@
     <a href="#landmark-slam">LANDMARK SLAM</a>
     <a href="#pid">PID CONTROL</a>
     <a href="#demo">DEMO</a>
-    <a href="#extensions">FUN EXTENSIONS</a>
     <a href="#simplifications">SIMPLIFICATIONS</a>
+    <a href="#extensions">FUN EXTENSIONS</a>
     <a href="#credits">CREDITS</a>
     <a href="#references">REFERENCES</a>
   </div>
 
   <span id="menu-icon" onclick="openNav()" class="material-symbols-outlined menu-icon">menu</span>
 
-  <div id="main" onclick="closeNav()">
+  <div id="main">
     <div class="w3-sand w3-large">
       <div id="introduction">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">INTRODUCTION</span></h5>
@@ -63,18 +63,18 @@
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">LOCOBOT PX100</span></h5>
         <div class="row">
           <div class="column">
-            <p class="content">
+            <div class="content">
               LoCoBot PX100, a.k.a "Low-Cost Robot", from Trossen Robotics (Interbotix) starts from about $3000 and has the following features:
-            <ul>
-              <li>Create 3 from iRobot (base)</li>
-              <li>Intel NUC NUC8i3BEH Mini PC</li>
-              <li>Intel RealSense Depth Camera D435</li>
-              <li>PincherX 100 Robot Arm (4 degrees of freedom)</li>
-              <li>RPLIDAR A2M8 360° Laser Range Scanner</li>
-              <li>MoveIt Support</li>
-            </ul>
-            <a href="https://docs.trossenrobotics.com/interbotix_xslocobots_docs/index.html" target="_blank">View the LoCoBot documentation here.</a>
-            </p>
+              <ul>
+                <li>Create 3 from iRobot (base)</li>
+                <li>Intel NUC NUC8i3BEH Mini PC</li>
+                <li>Intel RealSense Depth Camera D435</li>
+                <li>PincherX 100 Robot Arm (4 degrees of freedom)</li>
+                <li>RPLIDAR A2M8 360° Laser Range Scanner</li>
+                <li>MoveIt Support</li>
+              </ul>
+              <a href="https://docs.trossenrobotics.com/interbotix_xslocobots_docs/index.html" target="_blank">View the LoCoBot documentation here.</a>
+            </div>
           </div>
           <div class="column">
             <center><img src="/assets/images/px100_other_side.jpg" style="width:40%;" class="w3-margin-top"></center>
@@ -139,16 +139,16 @@
             <li>Having detailed logging is essential for debugging. Direct your outputs to log files rather than the terminal.</li>
           </ul>
           </p>
-          <!-- TODO: Sai, Aaron -->
 
-          <i>Add a quick guide on how to use LoCoBot and anything to work on this project. Pointers:</i>
+          <!-- TODO: Remove this -->
+          <!-- <i>Add a quick guide on how to use LoCoBot and anything to work on this project. Pointers:</i>
           <ul>
             <li>turning the locobot on/off</li>
             <li>sa, sam, saj</li>
             <li>The local website</li>
             <li>arm, camera, base, joints, etc of the bot</li>
             <li>python scipt</li>
-          </ul>
+          </ul> -->
         </div>
       </div>
 
@@ -468,21 +468,9 @@
         </center>
         <p class="content">
           <b>Description:</b> <br>
-          <span style="margin-left: 32px;">
+          <span>
             The robot starts at the origin (x=0, y=0, yaw=0) with the bin right behind it (x=0, y=0, yaw=-π). The landmarks (large AprilTags) were placed on the ground, the block was placed within the <code>CAMERA_SETTINGS.search_tilt</code> view. Once initiated, the robot searches for the block infront, left, and right of it. As the block isn't detectedm the robot moves forward by <code>SEARCH_INCREMENT_X</code> meters, and searches in the three fields of view again. Though the block can be seen now, it isn't within <code>BLOCK_DETECTION_RANGE</code> meters, so it moves forward. Now, as the block is nearby, the robot travels in the direction of the block such that it is <code>BLOCK_TRAVEL_RADIUS</code> meters away from the block. It tilts the camera to <code>CAMERA_SETTINGS.tilt</code> and starts aligning with the block until it is <code>GRABBING_RADIUS</code> away from the block. The arm then goes to the home pose, then to the ground, move forward by <code>GRABBING_ERROR_DISTANCE</code> meters, grabs the block, and returns the arm to the sleep pose. When in motion, the robot detects the landmarks on the ground and uses landmark localization through GTSAM to accurately predict its location. With the block grabbed, the robot travels back to the origin, but to the bin's pose (0, 0, -π). It then moves the arm to the home pose, moves forward, dropts the block, moves the arm to the sleep pose, and rotates back to the initial pose (0, 0, 0).
           </span>
-        </p>
-      </div>
-
-      <div id="extensions">
-        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">FUN EXTENSIONS</span></h5>
-        <p class="content">
-          Here are some additional subgoals we wanted to achieve, but couldn't because of the limited time:
-        <ul>
-          <li><b>Multi-block search</b> - Perform the same plan, go back and search for another block</li>
-          <li><b>Bin search</b> - Just like the block, search for the bin in the environment. The <code>find_goal()</code> is already configured to search for an AprilTag on the bin</li>
-          <li><b>Block sorting</b> - Have multiple bins and blocks, place a block in a specific bin</li>
-        </ul>
         </p>
       </div>
 
@@ -503,6 +491,18 @@
           <li>The path to the block and the bin is free from obstacles</li>
           <li>The landmark AprilTags were placed on the ground, to make use of the same camera tilt used for search and not switch between tilts. Only camera tilts were used, no pans</li>
           <li>When in motion, a validation is added to check if the base bumper hits anything to stop the motion. Adding this early stage would save you from running to the robot when it's rogue</li>
+        </ul>
+        </p>
+      </div>
+
+      <div id="extensions">
+        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">FUN EXTENSIONS</span></h5>
+        <p class="content">
+          Here are some additional subgoals we wanted to achieve, but couldn't because of the limited time:
+        <ul>
+          <li><b>Multi-block search</b> - Perform the same plan, go back and search for another block</li>
+          <li><b>Bin search</b> - Just like the block, search for the bin in the environment. The <code>find_goal()</code> is already configured to search for an AprilTag on the bin</li>
+          <li><b>Block sorting</b> - Have multiple bins and blocks, place a block in a specific bin</li>
         </ul>
         </p>
       </div>
