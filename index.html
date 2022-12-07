@@ -36,7 +36,7 @@
     <a href="#demo">DEMO</a>
     <a href="#conclusion">CONCLUSION</a>
     <a href="#extensions">FUN EXTENSIONS</a>
-    <a href="#tips">SIMPLIFICATIONS & TIPS</a>
+    <a href="#tips">SIMPLIFICATIONS</a>
     <a href="#credits">CREDITS</a>
     <a href="#references">REFERENCES</a>
   </div>
@@ -47,7 +47,7 @@
     <div class="w3-sand w3-large">
       <div id="introduction">
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">INTRODUCTION</span></h5>
-        <p class="content">This project was done as a part of the CS685 Autonomous Robotics course at George Mason University, and supported by the <a href="https://cs.gmu.edu/~robotics/pmwiki.php/Main/HomePage" target="_blank">GMU Autonomous Robotics Laboratory</a>. We were interested in experimenting with a real robot and chose to work with the <a href="https://www.trossenrobotics.com/locobot-px100.aspx" target="_blank">LoCoBot PX100</a>. We sought to demonstrate a task completing robot supported by ROS and its supporting APIs. We chose a "toy" problem of a block collecting robot that incorporates the concepts of Inverse Kinematics, Control, Probabilistic Robotics, Tracking and Localization, SLAM that were taught in the <a href="https://cs.gmu.edu/media/syllabi/Fall2022/CS_685SteinG001.pdf" target="_blank">course</a>, to let a robot navigate through and interact with the environment to perform basic tasks. The project was developed using <a href="http://wiki.ros.org/noetic" target="_blank">ROS Noetic</a>, which the LoCoBot supports seamlessly.</p>
+        <p class="content">This project was done as a part of the CS685 Autonomous Robotics course at George Mason University. We were interested in experimenting with a real robot and chose to work with the <a href="https://www.trossenrobotics.com/locobot-px100.aspx" target="_blank">LoCoBot PX100</a>. We sought to demonstrate a task completing robot supported by ROS and its supporting APIs. We chose a "toy" problem of a block collecting robot that incorporates the concepts of Inverse Kinematics, Control, Probabilistic Robotics, Tracking and Localization, SLAM that were taught in the <a href="https://cs.gmu.edu/media/syllabi/Fall2022/CS_685SteinG001.pdf" target="_blank">course</a>, to let a robot navigate through and interact with the environment to perform basic tasks. The project was developed using <a href="http://wiki.ros.org/noetic" target="_blank">ROS Noetic</a>, which the LoCoBot supports seamlessly.</p>
 
         <p class="content next">
           This tutorial is an informal introduction to using the LoCoBot and a walk through of each of the components that make up our project. We'll also discuss some practical tips and the challenges we faced. The LoCoBots offer a variety of sensors and capabilities that are very accessible to beginners, students, and researchers. We only scratched the surface of what is possible. We hope that sharing our experience through this tutorial will assist future students in leveraging the GMU Autonomous Robotics Lab's fleet of LoCoBots. We look forward to the cool projects to come!
@@ -87,13 +87,20 @@
         <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">QUICK GUIDE</span></h5>
         <div class="content">
         <p>
-          The LoCoBots we used were setup by the GMU Robotics Lab. Some of the information here on getting started is installation dependent and may change overtime.
+          The LoCoBots we used are hosted by the <a href="https://cs.gmu.edu/~robotics/pmwiki.php/Main/HomePage" target="_blank">GMU Autonomous Robotics Laboratory</a>, and configured by Michael Schader. Some of the information here on getting started is installation dependent and may change overtime.
         </p>
         <p>
           To start the LoCoBot, you will need to power on both the base (toggle switch on the side) and the onboard Mini PC located under the frame (push button, lights up blue). The rechargeable on board power supply provides plenty of charge for a few hours of use. Once the PC is powered on, the accompanying laptop computer can be used to SSH wirelessly to the onboard PC. Must be connected to the MASON network in the lab (not MASON SECURE). Each LoCoBot is numbered, so the for example, ssh locobot04.
         </p>
         <p>
-           
+           <b>Tips/b>
+            <ul>
+              <li><a href="http://wiki.ros.org/rosbag/Commandline" target="_blank">Rosbag</a> is an essential tool that can record and playback specified topics. This was very helpful both for troubleshooting and developing the Localizer code offline in a VM. We wrote a <a href="https://github.com/awpollon/cs685_locobot_blocks/blob/main/scripts/record_bag.sh" target="_blank">bash script</a> to record the topics we needed. Don't do all the topics, as the camera ones take up a lot of space.</li>
+              <li>When in motion, a validation is added to check if the base bumper hits anything to stop the motion (no rogue robots!)</li>
+              <li>The topic <code>/scan</code> can be used to get the LIDAR readings.</li>
+              <li><a href="https://www.trossenrobotics.com/docs/interbotix_xslocobots/ros_packages/navigation_stack_configuration.html" target="_blank">Navigation Stack </a> provides many rich features and mapping visualization. LoCoBot needs to be connected to a monitor for visuals in Rviz. We wish we had more time to play around with this!</li>
+              <li>Setting <a href="https://code.visualstudio.com/docs/remote/ssh" target="_blank">Remote Development using SSH</a> in VS Code could save lots of time</li>
+            </ul>
         </p>
           <!-- TODO: Sai, Aaron -->
 
@@ -104,8 +111,6 @@
           <li>The local website</li>
           <li>arm, camera, base, joints, etc of the bot</li>
           <li>python scipt</li>
-          <li>Nav Stack - https://www.trossenrobotics.com/docs/interbotix_xslocobots/ros_packages/navigation_stack_configuration.html (LoCoBot needs to be connected to a monitor for this)</li>
-          <li>Setting <a href="https://code.visualstudio.com/docs/remote/ssh" target="_blank">Remote Development using SSH</a> in VS Code could save lots of time</li>
         </ul>
       </div>
       </div>
@@ -454,8 +459,8 @@
         </p>
       </div>
 
-      <div id="tips">
-        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">SIMPLIFICATIONS & TIPS</span></h5>
+      <div id="simplifications"
+        <h5 class="w3-center w3-padding-32"><span class="w3-tag w3-wide">SIMPLIFICATIONS</span></h5>
         <p class="content">
           Here are some things that made our life easier (😉):
         <ul>
@@ -464,13 +469,9 @@
           <center><img src="/assets/images/block.jpg" style="width:15%;" class="w3-margin-top"></center>
           <li>The bin, in which the block is dropped, is placed right behind the initial pose so the robot doesn't have to search for the bin</li>
           <li>Since the motion after finding the block in search is faster than the alignment motion, the robot travels to a distance away from the block to speed the plan</li>
-          
-          <li><a href="http://wiki.ros.org/rosbag/Commandline" target="_blank">Rosbag</a> is an essential tool that can record and playback specified topics. This was very helpful both for troubleshooting and developing the Localizer code offline in a VM. We wrote a <a href="https://github.com/awpollon/cs685_locobot_blocks/blob/main/scripts/record_bag.sh" target="_blank">bash script</a> to record the topics we needed. Don't do all the topics, as the camera ones take up a lot of space.</li> 
           <li>Since the AprilTag on the block is small, the robot might not track it all the times. So the search has a threshold that ensures travel doesn't start until the block is within <code>BLOCK_DETECTION_RANGE</code> meters</li>
           <li>The path to the block and the bin is free from obstacles</li>
           <li>The landmark AprilTags were placed on the ground, to make use of the same camera tilt used for search and not switch between tilts. Only camera tilts were used, no pans</li>
-          <li>When in motion, a validation is added to check if the base bumper hits anything to stop the motion (no rogue robots!)</li>
-          <li>The topic <code>/scan</code> can be used to get the LIDAR readings</li>
         </ul>
         </p>
       </div>
